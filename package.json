@@ -1,0 +1,46 @@
+{
+  "name": "sunset-quality-app",
+  "version": "1.0.0",
+  "description": "בדיקת איכות שקיעה לפי מיקום (אפליקציית דסקטופ)",
+  "main": "main.js",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "package:win": "electron-builder --win --x64",
+    "build:web": "powershell -Command \"if (-not (Test-Path 'dist')) { New-Item -ItemType Directory -Path 'dist' }; Copy-Item 'index.html','styles.css','app.js','recommended.html' -Destination 'dist\\' -Force\"",
+    "cap:sync": "npm run build:web && npx cap sync",
+    "android": "npm run cap:sync && npx cap open android",
+    "ios": "npm run cap:sync && npx cap open ios",
+    "prepare:appflow": "npm run build:web"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0",
+    "electron": "^31.2.1",
+    "electron-builder": "^24.13.3",
+    "electron-debug": "^4.1.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/geolocation": "^6.0.1",
+    "@capacitor/ios": "^6.2.0"
+  },
+  "build": {
+    "appId": "com.example.sunsetquality",
+    "productName": "Sunset Quality",
+    "files": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "main.js",
+      "icons/**"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "icons/icon.ico"
+    }
+  }
+}

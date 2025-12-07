@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>גלו את איכות השקיעה בכל מקום בארץ</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <button id="menuToggle" class="menu-toggle" aria-label="תפריט">☰</button>
+      <nav id="menuPanel" class="menu-panel hidden" aria-label="תוכן העניינים">
+        <button class="menu-item" data-url="recommended.html">מצפים מומלצים</button>
+      </nav>
+      <h1>גלו את איכות השקיעה בכל מקום בארץ 🌅</h1>
+    </header>
+
+    <section class="controls">
+      <div class="search-row">
+        <div class="input-wrapper">
+          <input id="searchInput" type="text" placeholder="חפשו מקום (למשל: תל אביב)" aria-label="חיפוש מקום" />
+          <button id="searchBtn" class="btn-primary">🔍 בדוק</button>
+        </div>
+        <button id="locateBtn" class="btn-secondary">📍 המיקום שלי</button>
+      </div>
+      
+      <div class="day-selector-wrapper">
+        <label>בחרו יום:</label>
+        <div class="day-selector" id="daySelector">
+          <button class="day-btn active" data-day="0">היום</button>
+          <button class="day-btn" data-day="1">מחר</button>
+          <button class="day-btn" data-day="2">מחרתיים</button>
+        </div>
+      </div>
+
+      <p id="placeLabel" class="muted"></p>
+    </section>
+
+    <section id="favorites" class="favorites-section">
+      <h3>⭐ מיקומים מועדפים</h3>
+      <div id="favoritesList" class="favorites-list"></div>
+    </section>
+
+    <section id="result" class="card hidden">
+      <div class="result-header">
+        <h2 id="ratingText"></h2>
+        <button id="saveFavoriteBtn" class="btn-icon" title="שמור כמועדף">⭐</button>
+      </div>
+      <p id="sunsetTime" class="sunset-time"></p>
+      <p id="twilightRange" class="twilight-range"></p>
+      <div id="explain" class="explain"></div>
+      <div id="dateLabel" class="date-label"></div>
+    </section>
+
+    <section id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <p>טוען נתונים...</p>
+    </section>
+
+    <section id="error" class="error hidden" role="alert"></section>
+  </main>
+
+  <footer class="footer">
+    <span>נתוני מזג אוויר: Open-Meteo (תחנות מדידה ישראליות) | מיפוי: Open-Meteo Geocoding</span>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    // Auto-focus for convenience
+    document.getElementById('searchInput').focus();
+  </script>
+</body>
+</html>
+
+
