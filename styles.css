@@ -64,7 +64,7 @@ body::after {
 }
 
 .header {
-  text-align: center;
+  text-align: right;
   margin-bottom: 40px;
   animation: fadeInDown 0.6s ease-out;
   position: relative;
@@ -74,7 +74,7 @@ body::after {
 .menu-toggle {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -10px;
   width: 44px;
   height: 44px;
   border: none;
@@ -156,14 +156,18 @@ h1 {
 }
 
 .input-wrapper {
-  flex: 1;
+  flex: 0 1 auto;
   display: flex;
   gap: 8px;
-  min-width: 250px;
+  width: auto;
+  max-width: fit-content;
 }
 
 input[type="text"] {
-  flex: 1;
+  flex: 0 1 auto;
+  width: auto;
+  min-width: 200px;
+  max-width: 250px;
   padding: 14px 18px;
   border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
@@ -193,6 +197,8 @@ button {
   font-size: 1rem;
   transition: all 0.3s ease;
   white-space: nowrap;
+  width: auto;
+  min-width: 140px;
 }
 
 .btn-primary {
@@ -228,16 +234,22 @@ button {
 }
 
 .btn-icon {
-  background: transparent;
-  border: none;
-  color: var(--accent-2);
-  font-size: 1.5rem;
-  padding: 8px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 209, 102, 0.6);
+  color: #ffd166;
+  font-size: 2rem;
+  padding: 10px 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-radius: 8px;
+  border-radius: 10px;
   flex-shrink: 0;
   order: 0;
+  min-width: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255, 209, 102, 0.3);
 }
 
 .btn-icon:hover {
@@ -307,11 +319,11 @@ button {
 
 .result-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 16px;
   gap: 12px;
-  flex-direction: row;
+  flex-direction: row-reverse;
 }
 
 .rating {
@@ -591,6 +603,11 @@ button {
   
   .header {
     padding-right: 60px;
+    text-align: right;
+  }
+  
+  .menu-toggle {
+    right: -10px;
   }
   
   .menu-toggle {
@@ -607,8 +624,8 @@ button {
   }
   
   .input-wrapper {
-    width: 100%;
-    max-width: 100%;
+    width: auto;
+    max-width: fit-content;
     flex-direction: row;
     justify-content: center;
   }
@@ -661,7 +678,7 @@ button {
 }
 
 .recommended-page {
-  background: linear-gradient(180deg, #1b1e3f 0%, #472b62 40%, #fb7131 95%);
+  background: transparent;
   color: #f5f5f5;
   min-height: 100vh;
   margin: 0;
@@ -675,11 +692,18 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
   background: linear-gradient(180deg, #1b1e3f 0%, #472b62 40%, #fb7131 95%);
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  background-position: center;
   z-index: -1;
   pointer-events: none;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
 }
 
 .recommended-page::after {
