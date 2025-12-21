@@ -428,21 +428,8 @@ async function evaluateLocation(location) {
     }
     els.dateLabel.textContent = formatDate(pick.sunsetIso);
     
-    // הוספת הנתונים להסבר
+    // הוספת ההסבר (ללא נתונים טכניים)
     let explainHTML = score.reasons.map(r => `• ${r}`).join('<br/>');
-    if (window.lastSunsetData) {
-      const d = window.lastSunsetData;
-      explainHTML += '<br/><br/><div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.2);">';
-      explainHTML += '<strong style="font-size: 0.95em; color: rgba(255,255,255,0.8); display: block; margin-bottom: 8px;">📊 נתונים טכניים:</strong>';
-      explainHTML += `<div style="font-size: 0.9em; color: rgba(255,255,255,0.7); line-height: 1.8;">`;
-      explainHTML += `עננות כללית: <strong>${d.cloudTotal}%</strong> | `;
-      explainHTML += `נמוכה: <strong>${d.lowCloud}%</strong> | `;
-      explainHTML += `בינונית: <strong>${d.midCloud}%</strong> | `;
-      explainHTML += `גבוהה: <strong>${d.highCloud}%</strong><br/>`;
-      explainHTML += `ראות: <strong>${(d.visibility / 1000).toFixed(1)}km</strong> | `;
-      explainHTML += `גשם: <strong>${d.precipitation}mm</strong> (${d.precipitationProb}%)`;
-      explainHTML += `</div></div>`;
-    }
     els.explain.innerHTML = explainHTML;
     
     // Check if already in favorites

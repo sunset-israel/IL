@@ -550,31 +550,50 @@ button {
   }
   
   .search-row {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 8px;
   }
   
   .input-wrapper {
-    flex-direction: column;
+    flex: 1;
+    flex-direction: row;
+  }
+  
+  .input-wrapper input {
+    flex: 1;
+  }
+  
+  .input-wrapper button {
+    width: auto;
+    min-width: 80px;
   }
   
   button {
-    width: 100%;
+    width: auto;
+    min-width: 120px;
   }
   
   .day-selector {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 8px;
   }
   
   .day-btn {
-    width: 100%;
+    width: auto;
+    flex: 1;
   }
   
   .favorites-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
   
   .container {
-    padding: 20px 16px 80px;
+    padding: 32px 20px 80px;
+    max-width: 900px;
+  }
+  
+  .card {
+    padding: 20px;
   }
 }
 
@@ -599,6 +618,7 @@ button {
 .recommended-header {
   text-align: center;
   margin-bottom: 32px;
+  position: relative;
 }
 
 .recommended-header h1 {
@@ -608,7 +628,9 @@ button {
 }
 
 .back-link {
-  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   font-size: 0.95rem;
@@ -616,6 +638,7 @@ button {
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: background 0.2s ease;
+  z-index: 10;
 }
 
 .back-link:hover {
@@ -722,25 +745,33 @@ button {
 }
 
 @media (max-width: 640px) {
+  .recommended-header {
+    position: relative;
+    padding-top: 40px;
+  }
+  
   .recommended-header h1 {
-    font-size: 1.9rem;
+    font-size: 2.4rem;
+  }
+  
+  .back-link {
+    top: 0;
+    right: 0;
+    font-size: 0.9rem;
+    padding: 5px 8px;
   }
   
   .recommended-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
   }
   
   .region-title {
-    font-size: 1.5rem;
-    margin: 24px 0 12px;
-  }
-  
-  .viewpoint-image {
-    height: 140px;
+    font-size: 1.8rem;
+    margin: 32px 0 16px;
   }
   
   .viewpoint-content h2 {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 }
