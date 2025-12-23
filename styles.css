@@ -32,6 +32,7 @@ html, body {
   line-height: 1.6;
   position: relative;
   overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 /* שמש */
@@ -60,6 +61,7 @@ body::after {
   margin: 0 auto;
   padding: 32px 20px 80px;
   position: relative;
+  overflow-x: hidden;
   z-index: 2;
 }
 
@@ -68,6 +70,7 @@ body::after {
   margin-bottom: 40px;
   animation: fadeInDown 0.6s ease-out;
   position: relative;
+  overflow-x: hidden;
   padding-right: 0;
 }
 
@@ -80,19 +83,20 @@ body::after {
   position: fixed !important;
   top: 0 !important;
   right: 0 !important;
-  width: 44px;
-  height: 44px;
-  border: none;
+  width: 44px !important;
+  height: 44px !important;
+  border: none !important;
   border-radius: 12px;
-  background: transparent;
-  color: var(--fg);
-  font-size: 1.8rem;
+  background: transparent !important;
+  color: var(--fg) !important;
+  font-size: 1.8rem !important;
   cursor: pointer;
-  box-shadow: none;
+  box-shadow: none !important;
   transition: transform 0.2s ease, opacity 0.2s ease;
-  z-index: 1000 !important;
+  z-index: 10000 !important;
   margin: 0 !important;
   padding: 0 !important;
+  transform: none !important;
 }
 
 .menu-toggle:hover {
@@ -506,6 +510,7 @@ button {
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
+  overflow-x: hidden;
 }
 
 .favorite-item:hover {
@@ -522,20 +527,19 @@ button {
 }
 
 .favorite-item-coords {
-  font-size: 0.85rem;
-  color: var(--muted);
+  display: none;
 }
 
 .favorite-item-remove {
   position: absolute;
   top: 8px;
   left: 8px;
-  background: transparent;
-  border: none;
+  background: transparent !important;
+  border: none !important;
   color: var(--bad);
   width: 28px;
   height: 28px;
-  border-radius: 0;
+  border-radius: 0 !important;
   cursor: pointer;
   font-size: 1.4rem;
   display: flex;
@@ -543,10 +547,11 @@ button {
   justify-content: center;
   transition: all 0.2s ease;
   font-weight: bold;
+  box-shadow: none !important;
 }
 
 .favorite-item-remove:hover {
-  background: transparent;
+  background: transparent !important;
   transform: scale(1.2);
   opacity: 0.8;
 }
@@ -660,14 +665,21 @@ button {
     position: fixed !important;
     top: 0 !important;
     right: 0 !important;
-    z-index: 1000 !important;
+    width: 44px !important;
+    height: 44px !important;
+    z-index: 10000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
   }
   
   .menu-panel {
     position: fixed !important;
     top: 44px !important;
     right: 0 !important;
-    z-index: 999 !important;
+    z-index: 9999 !important;
+    margin: 0 !important;
+    transform: none !important;
   }
   
   .search-row {
@@ -754,6 +766,7 @@ button {
   min-height: 100vh;
   margin: 0;
   position: relative;
+  overflow-x: hidden;
 }
 
 .recommended-page::before {
@@ -791,6 +804,7 @@ button {
   text-align: center;
   margin-bottom: 32px;
   position: relative;
+  overflow-x: hidden;
 }
 
 .recommended-header h1 {
@@ -919,6 +933,7 @@ button {
 @media (max-width: 640px) {
   .recommended-header {
     position: relative;
+  overflow-x: hidden;
     padding-top: 40px;
   }
   

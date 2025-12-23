@@ -13,7 +13,6 @@ const els = {
   loading: document.getElementById('loading'),
   error: document.getElementById('error'),
   daySelector: document.getElementById('daySelector'),
-  saveFavoriteBtn: document.getElementById('saveFavoriteBtn'),
   favoritesList: document.getElementById('favoritesList'),
   menuToggle: document.getElementById('menuToggle'),
   menuPanel: document.getElementById('menuPanel'),
@@ -108,7 +107,6 @@ function renderFavorites() {
     item.innerHTML = `
       <button class="favorite-item-remove" onclick="removeFavorite(${fav.latitude}, ${fav.longitude}); event.stopPropagation();">×</button>
       <div class="favorite-item-name">${fav.name}</div>
-      <div class="favorite-item-coords">${fav.latitude.toFixed(2)}, ${fav.longitude.toFixed(2)}</div>
     `;
     item.addEventListener('click', () => {
       currentLocation = { latitude: fav.latitude, longitude: fav.longitude, label: fav.name };
@@ -647,13 +645,13 @@ async function evaluateLocation(location) {
           const name = starIcon.dataset.name;
           addFavorite({ latitude: lat, longitude: lon, label: name });
           renderFavorites();
-          // Update button state
+          // Update star icon state
           const favorites = getFavorites();
           const isFavorite = favorites.some(f => 
             f.latitude === lat && f.longitude === lon
           );
-          els.saveFavoriteBtn.style.opacity = isFavorite ? '0.5' : '1';
-          els.saveFavoriteBtn.title = isFavorite ? 'כבר שמור כמועדף' : 'שמור כמועדף';
+          starIcon.style.opacity = isFavorite ? '0.5' : '1';
+          starIcon.title = isFavorite ? 'כבר שמור כמועדף' : 'לחץ לשמירה כמועדף';
         });
       }
     }, 100);
@@ -669,13 +667,18 @@ async function evaluateLocation(location) {
     let explainHTML = score.reasons.map(r => `• ${r}`).join('<br/>');
     els.explain.innerHTML = explainHTML;
     
-    // Check if already in favorites
-    const favorites = getFavorites();
-    const isFavorite = favorites.some(f => 
-      f.latitude === location.latitude && f.longitude === location.longitude
-    );
-    els.saveFavoriteBtn.style.opacity = isFavorite ? '0.5' : '1';
-    els.saveFavoriteBtn.title = isFavorite ? 'כבר שמור כמועדף' : 'שמור כמועדף';
+    // Check if already in favorites - update star icon appearance
+    setTimeout(() => {
+      const starIcon = els.ratingText.querySelector('.save-favorite-icon');
+      if (starIcon) {
+        const favorites = getFavorites();
+        const isFavorite = favorites.some(f => 
+          f.latitude === location.latitude && f.longitude === location.longitude
+        );
+        starIcon.style.opacity = isFavorite ? '0.5' : '1';
+        starIcon.title = isFavorite ? 'כבר שמור כמועדף' : 'לחץ לשמירה כמועדף';
+      }
+    }, 100);
     
     hide(els.loading);
     show(els.result);
@@ -863,13 +866,7 @@ async function fallbackLocationFromIp() {
 els.searchBtn.addEventListener('click', onSearch);
 els.searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') onSearch(); });
 els.locateBtn.addEventListener('click', onLocate);
-els.saveFavoriteBtn.addEventListener('click', () => {
-  if (currentLocation) {
-    addFavorite(currentLocation);
-    els.saveFavoriteBtn.style.opacity = '0.5';
-    els.saveFavoriteBtn.title = 'כבר שמור כמועדף';
-  }
-});
+// Save favorite functionality is now handled by clicking the star icon in the result
 
 setupMenu();
 setupDaySelector();
