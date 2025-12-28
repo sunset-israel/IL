@@ -80,23 +80,22 @@ body::after {
 }
 
 .menu-toggle {
-  position: fixed !important;
-  top: 0 !important;
-  right: 0 !important;
-  width: 44px !important;
-  height: 44px !important;
-  border: none !important;
+  position: absolute;
+  top: 0;
+  right: -5px;
+  width: 44px;
+  height: 44px;
+  border: none;
   border-radius: 12px;
-  background: transparent !important;
-  color: var(--fg) !important;
-  font-size: 1.8rem !important;
+  background: transparent;
+  color: var(--fg);
+  font-size: 1.8rem;
   cursor: pointer;
-  box-shadow: none !important;
+  box-shadow: none;
   transition: transform 0.2s ease, opacity 0.2s ease;
-  z-index: 10000 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  transform: none !important;
+  z-index: 100;
+  margin: 0;
+  padding: 0;
 }
 
 .menu-toggle:hover {
@@ -105,9 +104,9 @@ body::after {
 }
 
 .menu-panel {
-  position: fixed !important;
-  top: 49px !important;
-  right: 0 !important;
+  position: absolute;
+  top: 49px;
+  right: -5px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -116,8 +115,8 @@ body::after {
   border-radius: 12px;
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.18);
   border: 1px solid rgba(0, 0, 0, 0.05);
-  z-index: 999 !important;
-  margin: 0 !important;
+  z-index: 99;
+  margin: 0;
 }
 
 .menu-item {
@@ -349,6 +348,7 @@ button {
   margin-bottom: 16px;
   gap: 12px;
   flex-direction: row;
+  position: relative;
 }
 
 .rating {
@@ -357,17 +357,17 @@ button {
   margin: 0;
   white-space: nowrap;
   flex: 1;
-  text-align: right;
-  direction: rtl;
+  text-align: left;
+  direction: ltr;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 8px;
   flex-wrap: nowrap;
 }
 
 .rating-icon {
-  order: 1;
+  order: 0;
   font-size: 2rem !important;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -394,7 +394,7 @@ button {
 }
 
 .rating-label {
-  order: 0;
+  order: 1;
 }
 
 .rating.good {
@@ -758,6 +758,33 @@ button {
   .card {
     padding: 20px;
   }
+  
+  .result-header {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .rating {
+    position: relative;
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+    direction: ltr;
+  }
+  
+  .rating-icon {
+    position: absolute;
+    left: 0;
+    order: 0;
+  }
+  
+  .rating-label {
+    order: 1;
+    text-align: left;
+    width: 100%;
+    margin-left: 50px;
+  }
 }
 
 .recommended-page {
@@ -767,6 +794,11 @@ button {
   margin: 0;
   position: relative;
   overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.recommended-page body::after {
+  display: none;
 }
 
 .recommended-page::before {
@@ -792,6 +824,12 @@ button {
 
 .recommended-page::after {
   content: none;
+  display: none;
+}
+
+body.recommended-page::after {
+  display: none !important;
+  content: none !important;
 }
 
 .recommended-container {
