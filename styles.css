@@ -662,24 +662,22 @@ button {
   }
   
   .menu-toggle {
-    position: fixed !important;
+    position: absolute !important;
     top: 0 !important;
-    right: 0 !important;
+    right: -5px !important;
     width: 44px !important;
     height: 44px !important;
-    z-index: 10000 !important;
+    z-index: 100 !important;
     margin: 0 !important;
     padding: 0 !important;
-    transform: none !important;
   }
   
   .menu-panel {
-    position: fixed !important;
-    top: 44px !important;
-    right: 0 !important;
-    z-index: 9999 !important;
+    position: absolute !important;
+    top: 49px !important;
+    right: -5px !important;
+    z-index: 99 !important;
     margin: 0 !important;
-    transform: none !important;
   }
   
   .search-row {
@@ -797,8 +795,14 @@ button {
   overflow-y: auto;
 }
 
-.recommended-page body::after {
-  display: none;
+.recommended-page body::after,
+body.recommended-page::after {
+  display: none !important;
+  content: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
 }
 
 .recommended-page::before {
@@ -827,10 +831,6 @@ button {
   display: none;
 }
 
-body.recommended-page::after {
-  display: none !important;
-  content: none !important;
-}
 
 .recommended-container {
   max-width: 1000px;
