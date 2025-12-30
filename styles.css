@@ -362,8 +362,9 @@ button {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 12px;
   flex-wrap: nowrap;
+  padding-right: 0;
 }
 
 .rating-icon {
@@ -374,6 +375,8 @@ button {
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   -webkit-text-fill-color: initial !important;
   text-fill-color: initial !important;
+  flex-shrink: 0;
+  margin-right: 8px;
 }
 
 .rating-icon:hover {
@@ -395,6 +398,10 @@ button {
 
 .rating-label {
   order: 0;
+  text-align: right;
+  direction: rtl;
+  flex: 1;
+  min-width: 0;
 }
 
 .rating.good {
@@ -422,6 +429,8 @@ button {
   color: var(--accent-2);
   font-weight: 600;
   margin: 12px 0;
+  text-align: right;
+  direction: rtl;
 }
 
 .twilight-range {
@@ -430,12 +439,16 @@ button {
   font-weight: 500;
   margin: 8px 0 12px;
   opacity: 0.9;
+  text-align: right;
+  direction: rtl;
 }
 
 .date-label {
   margin-top: 12px;
   color: var(--muted);
   font-size: 0.9rem;
+  text-align: right;
+  direction: rtl;
 }
 
 .explain { 
@@ -775,13 +788,22 @@ button {
     position: absolute;
     left: 0;
     order: 1;
+    flex-shrink: 0;
+    margin-right: 8px;
   }
   
   .rating-label {
     order: 0;
     text-align: right;
+    direction: rtl;
     width: 100%;
     margin-right: 50px;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .rating {
+    gap: 12px;
   }
 }
 
