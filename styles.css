@@ -357,7 +357,7 @@ button {
   font-size: 2.2rem;
   font-weight: 900;
   margin: 0;
-  white-space: nowrap;
+  white-space: normal;
   flex: 1;
   text-align: right;
   direction: rtl;
@@ -365,7 +365,7 @@ button {
   align-items: center;
   justify-content: flex-end;
   gap: 12px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   padding-right: 0;
   padding-left: 0;
   margin-left: 0;
@@ -407,9 +407,11 @@ button {
   direction: rtl;
   flex: 1;
   min-width: 0;
-  margin-right: 40px;
+  margin-right: 50px;
   padding-right: 0;
   overflow: visible;
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 .rating.good {
@@ -845,15 +847,19 @@ button {
     text-align: right;
     direction: rtl;
     width: 100%;
-    margin-right: 40px;
+    margin-right: 50px;
     flex: none;
     min-width: 0;
     padding-right: 0;
     overflow: visible;
+    word-wrap: break-word;
+    white-space: normal;
   }
   
   .rating {
     gap: 8px;
+    white-space: normal;
+    flex-wrap: wrap;
   }
   
   .sunset-time,
