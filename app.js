@@ -923,6 +923,11 @@ async function evaluateLocation(location) {
     
     hide(els.loading);
     show(els.result);
+    
+    // Scroll to result after a short delay to ensure it's visible
+    setTimeout(() => {
+      els.result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   } catch (e) {
     hide(els.loading);
     setError(e?.message || 'אירעה שגיאה');

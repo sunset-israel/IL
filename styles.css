@@ -349,7 +349,6 @@ button {
   gap: 12px;
   flex-direction: row;
   position: relative;
-  padding-left: 50px;
 }
 
 .rating {
@@ -369,9 +368,6 @@ button {
 }
 
 .rating-icon {
-  position: absolute;
-  left: 0;
-  top: 0;
   order: 1;
   font-size: 2rem !important;
   cursor: pointer;
@@ -380,7 +376,7 @@ button {
   -webkit-text-fill-color: initial !important;
   text-fill-color: initial !important;
   flex-shrink: 0;
-  margin-right: 0;
+  margin-right: 8px;
   z-index: 10;
 }
 
@@ -551,7 +547,7 @@ button {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 16px;
-  padding-left: 40px;
+  padding-left: 32px;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -816,32 +812,25 @@ button {
     direction: rtl;
   }
   
-  .rating-icon {
-    position: absolute;
-    left: 0;
-    order: 1;
-    flex-shrink: 0;
-    margin-right: 8px;
-  }
-  
   .rating {
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
     width: 100%;
+    justify-content: flex-end;
   }
   
   .rating-icon {
-    position: absolute;
-    left: 0;
-    top: 0;
     order: 1;
-    margin-bottom: 0;
-    margin-right: 0;
+    margin-right: 8px;
     z-index: 10;
   }
   
   .result-header {
-    padding-left: 50px;
+    padding-left: 0;
+  }
+  
+  .favorite-item {
+    padding-left: 32px;
   }
   
   .rating-label {
