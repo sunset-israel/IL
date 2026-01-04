@@ -362,17 +362,17 @@ button {
   text-align: right;
   direction: rtl;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-end;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 8px;
+  flex-direction: column;
   padding-right: 0;
   padding-left: 0;
   margin-left: 0;
 }
 
 .rating-icon {
-  order: 1;
+  order: 0;
   font-size: 2rem !important;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -380,8 +380,10 @@ button {
   -webkit-text-fill-color: initial !important;
   text-fill-color: initial !important;
   flex-shrink: 0;
-  margin-right: 8px;
+  margin-right: 0;
+  margin-bottom: 4px;
   z-index: 10;
+  align-self: flex-end;
 }
 
 .rating-icon:hover {
@@ -402,12 +404,12 @@ button {
 }
 
 .rating-label {
-  order: 0;
+  order: 1;
   text-align: right;
   direction: rtl;
   flex: 1;
   min-width: 0;
-  margin-right: 50px;
+  margin-right: 0;
   padding-right: 0;
   overflow: visible;
   word-wrap: break-word;
@@ -822,16 +824,18 @@ button {
   }
   
   .rating {
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
     width: 100%;
     justify-content: flex-end;
   }
   
   .rating-icon {
-    order: 1;
-    margin-right: 8px;
+    order: 0;
+    margin-right: 0;
+    margin-bottom: 4px;
     z-index: 10;
+    align-self: flex-end;
   }
   
   .result-header {
@@ -843,11 +847,11 @@ button {
   }
   
   .rating-label {
-    order: 0;
+    order: 1;
     text-align: right;
     direction: rtl;
     width: 100%;
-    margin-right: 50px;
+    margin-right: 0;
     flex: none;
     min-width: 0;
     padding-right: 0;
@@ -859,7 +863,7 @@ button {
   .rating {
     gap: 8px;
     white-space: normal;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
   
   .sunset-time,
