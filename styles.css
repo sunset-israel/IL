@@ -428,7 +428,7 @@ button {
   font-size: 1rem;
   color: var(--accent-2);
   font-weight: 500;
-  margin: 8px 0 12px;
+  margin: 12px 0;
   text-align: right;
   direction: rtl;
   display: inline-block;
@@ -439,7 +439,7 @@ button {
   font-size: 1.2rem;
   color: #ff8e53;
   font-weight: 600;
-  margin: 12px 0;
+  margin: 8px 0 12px;
   opacity: 0.9;
   text-align: right;
   direction: rtl;
@@ -497,7 +497,7 @@ button {
 
 .viewpoints-btn {
   display: inline-block;
-  background: #ffd700;
+  background: #ffeb3b;
   color: #000;
   font-weight: 700;
   font-size: 1.1rem;
@@ -506,14 +506,14 @@ button {
   text-decoration: none;
   margin-bottom: 20px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 235, 59, 0.4);
   direction: rtl;
 }
 
 .viewpoints-btn:hover {
-  background: #ffed4e;
+  background: #fff176;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+  box-shadow: 0 6px 20px rgba(255, 235, 59, 0.6);
 }
 
 .favorites-section h3 {
@@ -570,8 +570,8 @@ button {
 
 .favorite-item-remove {
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 0;
+  left: 0;
   background: transparent !important;
   border: none !important;
   color: var(--bad);
@@ -817,18 +817,31 @@ button {
     margin-right: 8px;
   }
   
+  .rating {
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+  }
+  
+  .rating-icon {
+    position: static;
+    order: 1;
+    align-self: flex-start;
+    margin-bottom: 8px;
+  }
+  
   .rating-label {
     order: 0;
     text-align: right;
     direction: rtl;
     width: 100%;
-    margin-right: 50px;
-    flex: 1;
+    margin-right: 0;
+    flex: none;
     min-width: 0;
   }
   
   .rating {
-    gap: 12px;
+    gap: 8px;
   }
   
   .sunset-time,
@@ -903,7 +916,7 @@ body.recommended-page::after {
   margin-bottom: 32px;
   position: relative;
   overflow-x: hidden;
-  padding-top: 8px;
+  padding-top: 48px;
 }
 
 .recommended-header h1 {
@@ -913,9 +926,9 @@ body.recommended-page::after {
 }
 
 .back-link {
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: fixed;
+  top: 8px;
+  right: 8px;
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   font-size: 1.5rem;
@@ -924,7 +937,7 @@ body.recommended-page::after {
   border: none;
   background: transparent;
   transition: transform 0.2s ease;
-  z-index: 10;
+  z-index: 100;
 }
 
 .back-link:hover {
@@ -1042,13 +1055,14 @@ body.recommended-page::after {
   }
   
   .back-link {
-    top: 0;
-    right: 0;
+    top: 8px;
+    right: 8px;
     font-size: 1.3rem;
     font-weight: bold;
     padding: 4px 8px;
     border: none;
     background: transparent;
+    position: fixed;
   }
   
   .recommended-grid {
