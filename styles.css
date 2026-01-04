@@ -407,7 +407,9 @@ button {
   direction: rtl;
   flex: 1;
   min-width: 0;
-  margin-right: 8px;
+  margin-right: 40px;
+  padding-right: 0;
+  overflow: visible;
 }
 
 .rating.good {
@@ -579,7 +581,7 @@ button {
 .favorite-item-remove {
   position: absolute;
   top: 0;
-  left: -4px;
+  left: -12px;
   background: transparent !important;
   border: none !important;
   color: var(--bad);
@@ -843,9 +845,11 @@ button {
     text-align: right;
     direction: rtl;
     width: 100%;
-    margin-right: 0;
+    margin-right: 40px;
     flex: none;
     min-width: 0;
+    padding-right: 0;
+    overflow: visible;
   }
   
   .rating {
