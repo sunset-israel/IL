@@ -364,7 +364,7 @@ button {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 4px;
   flex-direction: column;
   padding-right: 0;
   padding-left: 0;
@@ -381,7 +381,7 @@ button {
   text-fill-color: initial !important;
   flex-shrink: 0;
   margin-right: 0;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   z-index: 10;
   align-self: flex-end;
 }
@@ -833,7 +833,7 @@ button {
   .rating-icon {
     order: 0;
     margin-right: 0;
-    margin-bottom: 4px;
+    margin-bottom: 0;
     z-index: 10;
     align-self: flex-end;
   }
@@ -861,7 +861,7 @@ button {
   }
   
   .rating {
-    gap: 8px;
+    gap: 4px;
     white-space: normal;
     flex-wrap: nowrap;
   }
