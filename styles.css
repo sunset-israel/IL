@@ -229,7 +229,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  flex-direction: row-reverse;
+  flex-direction: row;
 }
 
 .btn-primary:hover {
@@ -339,6 +339,7 @@ button {
   border-radius: 20px;
   box-shadow: var(--shadow);
   animation: fadeInUp 0.5s ease-out;
+  overflow: hidden;
 }
 
 .result-header {
@@ -349,6 +350,7 @@ button {
   gap: 12px;
   flex-direction: row;
   position: relative;
+  overflow: hidden;
 }
 
 .rating {
@@ -365,6 +367,8 @@ button {
   gap: 12px;
   flex-wrap: nowrap;
   padding-right: 0;
+  padding-left: 0;
+  margin-left: 0;
 }
 
 .rating-icon {
@@ -403,6 +407,7 @@ button {
   direction: rtl;
   flex: 1;
   min-width: 0;
+  margin-right: 8px;
 }
 
 .rating.good {
@@ -574,7 +579,7 @@ button {
 .favorite-item-remove {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -4px;
   background: transparent !important;
   border: none !important;
   color: var(--bad);
@@ -760,7 +765,7 @@ button {
     justify-content: center;
     gap: 6px;
     padding: 14px 16px;
-    flex-direction: row-reverse;
+    flex-direction: row;
   }
   
   #locateBtn {
