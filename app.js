@@ -736,7 +736,7 @@ function scoreSunsetPoint(forecast, idx) {
   // העננות הגבוהה תתלבש בצבעים יפים והעננות הנמוכה לא תחסום את האופק
   if (highCloud >= 80 && lowCloud <= 10 && cloudTotal >= 85) {
     return { 
-      label: 'שקיעה מהממת !', 
+      label: 'שקיעה מהממת!', 
       klass: 'good', 
       reasons: ['עננות גבוהה גבוהה עם עננות נמוכה מועטה - תנאים אידיאליים לשקיעה צבעונית!'] 
     };
@@ -745,7 +745,7 @@ function scoreSunsetPoint(forecast, idx) {
   // גם עם עננות גבוהה בינונית-גבוהה (60%+) ועננות נמוכה נמוכה (15% או פחות)
   if (highCloud >= 60 && lowCloud <= 15 && cloudTotal >= 80 && (midCloud ?? 0) <= 20) {
     return { 
-      label: 'שקיעה מהממת !', 
+      label: 'שקיעה מהממת!', 
       klass: 'good', 
       reasons: ['עננות גבוהה טובה עם עננות נמוכה מועטה - תנאים מצוינים לשקיעה צבעונית!'] 
     };

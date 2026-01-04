@@ -362,17 +362,17 @@ button {
   text-align: right;
   direction: rtl;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
-  gap: 4px;
-  flex-direction: column;
+  gap: 8px;
+  flex-direction: row;
   padding-right: 0;
   padding-left: 0;
   margin-left: 0;
 }
 
 .rating-icon {
-  order: 0;
+  order: 1;
   font-size: 2rem !important;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -383,7 +383,8 @@ button {
   margin-right: 0;
   margin-bottom: 0;
   z-index: 10;
-  align-self: flex-end;
+  text-shadow: none !important;
+  filter: none !important;
 }
 
 .rating-icon:hover {
@@ -404,7 +405,7 @@ button {
 }
 
 .rating-label {
-  order: 1;
+  order: 0;
   text-align: right;
   direction: rtl;
   flex: 1;
@@ -824,18 +825,19 @@ button {
   }
   
   .rating {
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
     width: 100%;
     justify-content: flex-end;
   }
   
   .rating-icon {
-    order: 0;
+    order: 1;
     margin-right: 0;
     margin-bottom: 0;
     z-index: 10;
-    align-self: flex-end;
+    text-shadow: none !important;
+    filter: none !important;
   }
   
   .result-header {
@@ -847,7 +849,7 @@ button {
   }
   
   .rating-label {
-    order: 1;
+    order: 0;
     text-align: right;
     direction: rtl;
     width: 100%;
@@ -861,7 +863,7 @@ button {
   }
   
   .rating {
-    gap: 4px;
+    gap: 8px;
     white-space: normal;
     flex-wrap: nowrap;
   }
