@@ -344,11 +344,12 @@ button {
 .result-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 16px;
   gap: 12px;
   flex-direction: row;
   position: relative;
+  padding-left: 50px;
 }
 
 .rating {
@@ -368,6 +369,9 @@ button {
 }
 
 .rating-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
   order: 1;
   font-size: 2rem !important;
   cursor: pointer;
@@ -376,7 +380,8 @@ button {
   -webkit-text-fill-color: initial !important;
   text-fill-color: initial !important;
   flex-shrink: 0;
-  margin-right: 8px;
+  margin-right: 0;
+  z-index: 10;
 }
 
 .rating-icon:hover {
@@ -497,23 +502,24 @@ button {
 
 .viewpoints-btn {
   display: inline-block;
-  background: #ffeb3b;
+  background: transparent;
   color: #000;
   font-weight: 700;
   font-size: 1.1rem;
   padding: 12px 20px;
   border-radius: 12px;
+  border: 2px solid #000;
   text-decoration: none;
   margin-bottom: 20px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 235, 59, 0.4);
+  box-shadow: none;
   direction: rtl;
 }
 
 .viewpoints-btn:hover {
-  background: #fff176;
+  background: rgba(0, 0, 0, 0.05);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 235, 59, 0.6);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .favorites-section h3 {
@@ -545,6 +551,7 @@ button {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 16px;
+  padding-left: 40px;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -824,10 +831,17 @@ button {
   }
   
   .rating-icon {
-    position: static;
+    position: absolute;
+    left: 0;
+    top: 0;
     order: 1;
-    align-self: flex-start;
-    margin-bottom: 8px;
+    margin-bottom: 0;
+    margin-right: 0;
+    z-index: 10;
+  }
+  
+  .result-header {
+    padding-left: 50px;
   }
   
   .rating-label {
