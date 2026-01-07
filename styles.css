@@ -339,7 +339,7 @@ button {
   border-radius: 20px;
   box-shadow: var(--shadow);
   animation: fadeInUp 0.5s ease-out;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .result-header {
@@ -350,7 +350,8 @@ button {
   gap: 12px;
   flex-direction: row;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
+  width: 100%;
 }
 
 .rating {
@@ -369,6 +370,8 @@ button {
   padding-right: 0;
   padding-left: 0;
   margin-left: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .rating-icon {
@@ -410,11 +413,12 @@ button {
   direction: rtl;
   flex: 1;
   min-width: 0;
-  margin-right: 50px;
-  padding-right: 0;
-  overflow: visible;
+  margin-right: 40px;
+  padding-right: 8px;
+  overflow: hidden;
   word-wrap: break-word;
   white-space: normal;
+  text-overflow: ellipsis;
 }
 
 .rating.good {
@@ -563,7 +567,7 @@ button {
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  overflow-x: hidden;
+  overflow: visible;
 }
 
 .favorite-item:hover {
@@ -586,7 +590,7 @@ button {
 .favorite-item-remove {
   position: absolute;
   top: 0;
-  left: -12px;
+  left: 0;
   background: transparent !important;
   border: none !important;
   color: var(--bad);
@@ -601,6 +605,7 @@ button {
   transition: all 0.2s ease;
   font-weight: bold;
   box-shadow: none !important;
+  z-index: 5;
 }
 
 .favorite-item-remove:hover {
@@ -853,19 +858,22 @@ button {
     text-align: right;
     direction: rtl;
     width: 100%;
-    margin-right: 50px;
+    margin-right: 40px;
     flex: none;
     min-width: 0;
-    padding-right: 0;
-    overflow: visible;
+    padding-right: 8px;
+    overflow: hidden;
     word-wrap: break-word;
     white-space: normal;
+    text-overflow: ellipsis;
   }
   
   .rating {
     gap: 8px;
     white-space: normal;
     flex-wrap: nowrap;
+    max-width: 100%;
+    overflow: hidden;
   }
   
   .sunset-time,
