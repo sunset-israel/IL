@@ -350,7 +350,7 @@ button {
   gap: 12px;
   flex-direction: row;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
 }
 
@@ -367,11 +367,11 @@ button {
   justify-content: flex-end;
   gap: 8px;
   flex-direction: row;
-  padding-right: 0;
+  padding-right: 12px;
   padding-left: 0;
   margin-left: 0;
   max-width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .rating-icon {
@@ -413,12 +413,11 @@ button {
   direction: rtl;
   flex: 1;
   min-width: 0;
-  margin-right: 40px;
-  padding-right: 8px;
-  overflow: hidden;
+  margin-right: 50px;
+  padding-right: 12px;
+  overflow: visible;
   word-wrap: break-word;
   white-space: normal;
-  text-overflow: ellipsis;
 }
 
 .rating.good {
@@ -563,7 +562,7 @@ button {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 16px;
-  padding-left: 32px;
+  padding-left: 40px;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -589,13 +588,17 @@ button {
 
 .favorite-item-remove {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 4px;
+  left: 4px;
   background: transparent !important;
   border: none !important;
   color: var(--bad);
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+  margin: 0;
   border-radius: 0 !important;
   cursor: pointer;
   font-size: 1.4rem;
@@ -606,6 +609,7 @@ button {
   font-weight: bold;
   box-shadow: none !important;
   z-index: 5;
+  line-height: 1;
 }
 
 .favorite-item-remove:hover {
@@ -850,7 +854,18 @@ button {
   }
   
   .favorite-item {
-    padding-left: 32px;
+    padding-left: 40px;
+  }
+  
+  .favorite-item-remove {
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 0;
+    margin: 0;
   }
   
   .rating-label {
@@ -858,14 +873,13 @@ button {
     text-align: right;
     direction: rtl;
     width: 100%;
-    margin-right: 40px;
+    margin-right: 50px;
     flex: none;
     min-width: 0;
-    padding-right: 8px;
-    overflow: hidden;
+    padding-right: 12px;
+    overflow: visible;
     word-wrap: break-word;
     white-space: normal;
-    text-overflow: ellipsis;
   }
   
   .rating {
@@ -873,7 +887,8 @@ button {
     white-space: normal;
     flex-wrap: nowrap;
     max-width: 100%;
-    overflow: hidden;
+    overflow: visible;
+    padding-right: 12px;
   }
   
   .sunset-time,
