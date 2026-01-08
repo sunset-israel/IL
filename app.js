@@ -1129,7 +1129,11 @@ async function fallbackLocationFromIp() {
 }
 
 // Initialize
-els.searchBtn.addEventListener('click', onSearch);
+els.searchBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  onSearch();
+});
 els.searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') onSearch(); });
 els.locateBtn.addEventListener('click', onLocate);
 // Save favorite functionality is now handled by clicking the star icon in the result
