@@ -79,9 +79,9 @@ body::after {
   text-align: center;
 }
 
-/* Android-specific font for header - matching iOS exactly */
+/* Android-specific font for header */
 body.android-device .header h1 {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Heebo', Arial, sans-serif !important;
+  font-family: 'Assistant', Arial, sans-serif !important;
   font-weight: 900 !important;
   font-size: 2.5rem !important;
   -webkit-font-smoothing: antialiased;
@@ -89,9 +89,6 @@ body.android-device .header h1 {
   text-rendering: optimizeLegibility;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  font-variant-ligatures: none;
-  font-feature-settings: normal;
-  letter-spacing: 0;
 }
 
 .menu-toggle {
