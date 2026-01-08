@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="favicon.png?v=4" />
   <link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=4" />
-  <link rel="stylesheet" href="styles.css?v=18" />
+  <link rel="stylesheet" href="styles.css?v=22" />
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
@@ -74,6 +74,16 @@
     <span>נתוני מזג אוויר: Open-Meteo (תחנות מדידה ישראליות) | מיפוי: ©Open-Meteo Geocoding</span>
   </footer>
 
+  <script>
+    // Detect Android and add class to body
+    (function() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      const isAndroid = /android/i.test(userAgent);
+      if (isAndroid) {
+        document.body.classList.add('android-device');
+      }
+    })();
+  </script>
   <script src="app.js"></script>
   <script>
     // Auto-focus for convenience
