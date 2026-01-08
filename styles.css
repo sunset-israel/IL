@@ -549,7 +549,7 @@ button {
   color: var(--muted);
   font-weight: normal;
   font-style: italic;
-  margin-top: -8px;
+  margin-top: 8px;
   margin-bottom: 12px;
   text-align: right;
 }
@@ -565,11 +565,15 @@ button {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 8px 12px;
-  padding-left: 36px;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  direction: rtl;
 }
 
 .favorite-item:hover {
@@ -581,8 +585,10 @@ button {
 
 .favorite-item-name {
   font-weight: 600;
-  margin-bottom: 4px;
+  margin: 0;
   color: var(--fg);
+  flex: 1;
+  text-align: right;
 }
 
 .favorite-item-coords {
@@ -590,9 +596,7 @@ button {
 }
 
 .favorite-item-remove {
-  position: absolute;
-  top: 4px;
-  left: 4px;
+  position: static;
   background: transparent !important;
   border: none !important;
   color: var(--bad);
@@ -605,6 +609,8 @@ button {
   border-radius: 0 !important;
   cursor: pointer;
   font-size: 1.4rem;
+  flex-shrink: 0;
+  order: -1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -858,18 +864,23 @@ button {
   
   .favorite-item {
     padding: 8px 12px;
-    padding-left: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    direction: rtl;
   }
   
   .favorite-item-remove {
-    top: 4px;
-    left: 4px;
+    position: static;
     width: 24px;
     height: 24px;
     min-width: 24px;
     min-height: 24px;
     padding: 0;
     margin: 0;
+    flex-shrink: 0;
+    order: -1;
   }
   
   .rating-label {

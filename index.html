@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="favicon.png?v=4" />
   <link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=4" />
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=18" />
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
@@ -48,6 +48,7 @@
     <section id="favorites" class="favorites-section">
       <a href="recommended.html" class="viewpoints-btn">&lt; מצפים מומלצים</a>
       <h3>מיקומים מועדפים</h3>
+      <p id="favoriteHint" class="favorites-hint hidden">(לחצו על הכוכב לשמירת המיקום כמועדף)</p>
       <div id="favoritesList" class="favorites-list"></div>
     </section>
 
@@ -55,7 +56,6 @@
       <div class="result-header">
         <h2 id="ratingText"></h2>
       </div>
-      <p id="favoriteHint" class="favorites-hint hidden">(לחצו על הכוכב לשמירת המיקום כמועדף)</p>
       <p id="twilightRange" class="twilight-range"></p>
       <p id="sunsetTime" class="sunset-time"></p>
       <div id="explain" class="explain"></div>
