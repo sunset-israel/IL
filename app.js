@@ -6,6 +6,7 @@ const els = {
   placeLabel: document.getElementById('placeLabel'),
   result: document.getElementById('result'),
   ratingText: document.getElementById('ratingText'),
+  favoriteHint: document.getElementById('favoriteHint'),
   sunsetTime: document.getElementById('sunsetTime'),
   twilightRange: document.getElementById('twilightRange'),
   explain: document.getElementById('explain'),
@@ -855,6 +856,9 @@ function scoreSunsetPoint(forecast, idx) {
 
 async function evaluateLocation(location) {
   hide(els.result);
+  if (els.favoriteHint) {
+    hide(els.favoriteHint);
+  }
   setError('');
   show(els.loading);
   
@@ -870,6 +874,11 @@ async function evaluateLocation(location) {
     const icon = '⭐';
     els.ratingText.innerHTML = `<span class="rating-icon save-favorite-icon" data-lat="${location.latitude}" data-lon="${location.longitude}" data-name="${(location.label || 'מיקום נבחר').replace(/"/g, '&quot;')}">${icon}</span> <span class="rating-label">${score.label}</span>`;
     els.ratingText.className = `rating ${score.klass}`;
+    
+    // Show the favorite hint when result is displayed
+    if (els.favoriteHint) {
+      show(els.favoriteHint);
+    }
     
     // Check if already in favorites and setup click handler
     const favorites = getFavorites();

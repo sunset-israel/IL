@@ -364,11 +364,11 @@ button {
   direction: rtl;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 8px;
   flex-direction: row;
   padding-right: 12px;
-  padding-left: 0;
+  padding-left: 12px;
   margin-left: 0;
   max-width: 100%;
   overflow: visible;
@@ -409,12 +409,12 @@ button {
 
 .rating-label {
   order: 0;
-  text-align: right;
+  text-align: center;
   direction: rtl;
   flex: 1;
   min-width: 0;
-  margin-right: 30px;
-  padding-right: 12px;
+  margin-right: 8px;
+  padding-right: 8px;
   overflow: visible;
   word-wrap: break-word;
   white-space: normal;
@@ -549,6 +549,9 @@ button {
   color: var(--muted);
   font-weight: normal;
   font-style: italic;
+  margin-top: -8px;
+  margin-bottom: 12px;
+  text-align: right;
 }
 
 .favorites-list {
@@ -871,13 +874,13 @@ button {
   
   .rating-label {
     order: 0;
-    text-align: right;
+    text-align: center;
     direction: rtl;
     width: 100%;
-    margin-right: 30px;
+    margin-right: 8px;
     flex: none;
     min-width: 0;
-    padding-right: 12px;
+    padding-right: 8px;
     overflow: visible;
     word-wrap: break-word;
     white-space: normal;
@@ -890,6 +893,8 @@ button {
     max-width: 100%;
     overflow: visible;
     padding-right: 12px;
+    padding-left: 12px;
+    justify-content: center;
   }
   
   .sunset-time,
