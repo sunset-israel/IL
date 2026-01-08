@@ -85,7 +85,7 @@ body::after {
 body.android-device .header h1 {
   font-family: 'Assistant', Arial, sans-serif !important;
   font-weight: 900 !important;
-  font-size: 2.5rem !important;
+  font-size: 3rem !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -157,7 +157,7 @@ body.android-device .rating-label {
 h1 {
   font-family: 'Assistant', Arial, sans-serif;
   font-weight: 900;
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin: 0 0 12px;
   color: #000000;
 }
@@ -391,12 +391,13 @@ button {
   justify-content: flex-end;
   gap: 12px;
   flex-direction: row;
-  padding-right: 12px;
-  padding-left: 12px;
+  padding-right: 0;
+  padding-left: 0;
   margin-left: 0;
   max-width: 100%;
   overflow: visible;
   position: relative;
+  width: 100%;
 }
 
 .rating-icon {
@@ -448,8 +449,9 @@ button {
   word-wrap: break-word;
   white-space: normal;
   align-self: center;
-  width: auto;
+  width: 100%;
   font-size: 2.5rem;
+  display: block;
 }
 
 .rating.good {
@@ -1101,10 +1103,21 @@ button {
     word-break: break-word;
     text-align: right;
     align-self: center;
-    width: auto;
+    width: 100%;
     margin-right: 0;
     padding-right: 0;
     font-size: 2rem;
+    display: block;
+  }
+  
+  .rating {
+    padding-right: 0;
+    padding-left: 0;
+    width: 100%;
+  }
+  
+  .result-header {
+    padding-right: 0;
   }
   
   .sunset-time,
