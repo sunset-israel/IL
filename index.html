@@ -28,7 +28,8 @@
     <section class="controls">
       <div class="search-row">
         <div class="input-wrapper">
-          <input id="searchInput" type="text" placeholder="חפשו מקום" aria-label="חיפוש מקום" />
+          <input id="searchInput" type="text" placeholder="חפשו מקום" aria-label="חיפוש מקום" autocomplete="off" />
+          <div id="autocompleteList" class="autocomplete-list hidden"></div>
         </div>
         <div class="buttons-row">
           <button id="searchBtn" class="btn-primary">בדוק 🔍</button>

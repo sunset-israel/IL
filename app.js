@@ -17,7 +17,8 @@ const els = {
   favoritesList: document.getElementById('favoritesList'),
   menuToggle: document.getElementById('menuToggle'),
   menuPanel: document.getElementById('menuPanel'),
-  recommendedSection: document.getElementById('recommendedSection')
+  recommendedSection: document.getElementById('recommendedSection'),
+  autocompleteList: document.getElementById('autocompleteList')
 };
 
 // State
@@ -117,8 +118,12 @@ function renderFavorites() {
   });
 }
 
-// Geocoding
-async function geocodeByName(name) {
+// Autocomplete functionality
+let allLocations = null;
+
+function getAllLocations() {
+  if (allLocations) return allLocations;
+  
   // רשימת מקומות ישראליים נפוצים עם קואורדינטות ידועות
   const israeliLocations = {
     'תל אביב': { lat: 32.0853, lon: 34.7818, name: 'תל אביב' },
@@ -524,6 +529,15 @@ async function geocodeByName(name) {
     'מועצה אזורית רמת הנגב': { lat: 30.8000, lon: 34.8000, name: 'מועצה אזורית רמת הנגב' },
     'מועצה אזורית תמר': { lat: 31.0000, lon: 35.4000, name: 'מועצה אזורית תמר' }
   };
+  
+  allLocations = israeliLocations;
+  return allLocations;
+}
+
+// Geocoding
+async function geocodeByName(name) {
+  // רשימת מקומות ישראליים נפוצים עם קואורדינטות ידועות
+  const israeliLocations = getAllLocations();
   
   // בדיקה אם זה מקום ישראלי נפוץ
   const normalizedName = name.trim();
@@ -1128,13 +1142,137 @@ async function fallbackLocationFromIp() {
   }
 }
 
+// Autocomplete functions
+function searchLocations(query) {
+  if (!query || query.trim().length < 1) return [];
+  
+  const locations = getAllLocations();
+  const normalizedQuery = query.trim().toLowerCase();
+  const results = [];
+  
+  for (const [key, value] of Object.entries(locations)) {
+    if (key.toLowerCase().includes(normalizedQuery)) {
+      results.push({ name: key, ...value });
+    }
+  }
+  
+  // מיון לפי התאמה (מתחיל עם > מכיל)
+  results.sort((a, b) => {
+    const aStarts = a.name.toLowerCase().startsWith(normalizedQuery);
+    const bStarts = b.name.toLowerCase().startsWith(normalizedQuery);
+    if (aStarts && !bStarts) return -1;
+    if (!aStarts && bStarts) return 1;
+    return a.name.localeCompare(b.name, 'he');
+  });
+  
+  return results.slice(0, 10); // מקסימום 10 תוצאות
+}
+
+function showAutocomplete(results) {
+  if (!els.autocompleteList) return;
+  
+  els.autocompleteList.innerHTML = '';
+  
+  if (results.length === 0) {
+    hide(els.autocompleteList);
+    return;
+  }
+  
+  results.forEach((location, index) => {
+    const item = document.createElement('div');
+    item.className = 'autocomplete-item';
+    item.textContent = location.name;
+    item.setAttribute('data-index', index);
+    item.setAttribute('tabindex', '0');
+    
+    item.addEventListener('click', () => {
+      selectLocation(location);
+    });
+    
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        selectLocation(location);
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = els.autocompleteList.children[index + 1];
+        if (next) next.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (index > 0) {
+          els.autocompleteList.children[index - 1].focus();
+        } else {
+          els.searchInput.focus();
+        }
+      }
+    });
+    
+    els.autocompleteList.appendChild(item);
+  });
+  
+  show(els.autocompleteList);
+}
+
+function hideAutocomplete() {
+  if (els.autocompleteList) {
+    hide(els.autocompleteList);
+  }
+}
+
+function selectLocation(location) {
+  if (els.searchInput) {
+    els.searchInput.value = location.name;
+  }
+  hideAutocomplete();
+  
+  // בחירת המקום
+  currentLocation = {
+    latitude: location.lat,
+    longitude: location.lon,
+    label: location.name
+  };
+  evaluateLocation(currentLocation);
+}
+
 // Initialize
 els.searchBtn.addEventListener('click', (e) => {
   e.preventDefault();
   e.stopPropagation();
+  hideAutocomplete();
   onSearch();
 });
-els.searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') onSearch(); });
+
+els.searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    hideAutocomplete();
+    onSearch();
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    const firstItem = els.autocompleteList?.querySelector('.autocomplete-item');
+    if (firstItem) firstItem.focus();
+  } else if (e.key === 'Escape') {
+    hideAutocomplete();
+  }
+});
+
+els.searchInput.addEventListener('input', (e) => {
+  const query = e.target.value;
+  if (query.trim().length >= 1) {
+    const results = searchLocations(query);
+    showAutocomplete(results);
+  } else {
+    hideAutocomplete();
+  }
+});
+
+// סגירת הרשימה כשלוחצים מחוץ לה
+document.addEventListener('click', (e) => {
+  if (els.autocompleteList && !els.autocompleteList.contains(e.target) && 
+      e.target !== els.searchInput) {
+    hideAutocomplete();
+  }
+});
+
 els.locateBtn.addEventListener('click', onLocate);
 // Save favorite functionality is now handled by clicking the star icon in the result
 
