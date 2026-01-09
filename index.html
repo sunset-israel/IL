@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="favicon.png?v=4" />
   <link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=4" />
-  <link rel="stylesheet" href="styles.css?v=32" />
+  <link rel="stylesheet" href="styles.css?v=34" />
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
@@ -82,12 +82,15 @@
     (function() {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
       const isAndroid = /android/i.test(userAgent);
-      const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+      // Better iOS detection
+      const isIOS = /iPad|iPhone|iPod/.test(userAgent) || 
+                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       if (isAndroid) {
         document.body.classList.add('android-device');
       }
       if (isIOS) {
         document.body.classList.add('ios-device');
+        console.log('iOS device detected');
       }
     })();
   </script>

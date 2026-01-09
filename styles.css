@@ -98,9 +98,29 @@ body.android-device .rating-label {
   font-family: 'Assistant', Arial, sans-serif !important;
 }
 
-/* iOS-specific font size for header */
+/* iOS-specific font size for header - slightly larger than default 3rem */
 body.ios-device .header h1 {
   font-size: 3.2rem !important;
+  line-height: 1.2;
+}
+
+/* Override media queries for iOS */
+@media (max-width: 640px) {
+  body.ios-device .header h1 {
+    font-size: 2.4rem !important;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 640px) {
+  body.ios-device .header h1 {
+    font-size: 2.2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body.ios-device .header h1 {
+    font-size: 2rem !important;
+  }
 }
 
 .menu-toggle {
