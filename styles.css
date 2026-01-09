@@ -100,7 +100,7 @@ body.android-device .rating-label {
 
 /* iOS-specific font size for header */
 body.ios-device .header h1 {
-  font-size: 3.5rem !important;
+  font-size: 3.2rem !important;
 }
 
 .menu-toggle {
