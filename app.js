@@ -179,6 +179,7 @@ function getAllLocations() {
     'בית שמש': { lat: 31.7514, lon: 34.9883, name: 'בית שמש' },
     'ביתר עילית': { lat: 31.7000, lon: 35.1167, name: 'ביתר עילית' },
     'גבעת זאב': { lat: 31.8600, lon: 35.1700, name: 'גבעת זאב' },
+    'לביא': { lat: 32.7056, lon: 35.2611, name: 'לביא', nameEn: 'Lavi' },
     'מעלה אדומים': { lat: 31.7772, lon: 35.2981, name: 'מעלה אדומים' },
     'ערד': { lat: 31.2581, lon: 35.2128, name: 'ערד' },
     'ירוחם': { lat: 30.9881, lon: 34.9311, name: 'ירוחם' },
@@ -1168,36 +1169,54 @@ function searchLocations(query) {
   
   // שימוש באותו מאגר בדיוק כמו geocodeByName
   const locations = getAllLocations();
-  const normalizedQuery = query.trim().toLowerCase();
+  const trimmedQuery = query.trim();
+  const normalizedQuery = trimmedQuery.toLowerCase();
   const queryWords = normalizedQuery.split(/\s+/).filter(w => w.length > 0);
-  const isQueryHebrew = isHebrew(query);
+  const isQueryHebrew = isHebrew(trimmedQuery);
   const results = [];
   
   for (const [key, value] of Object.entries(locations)) {
-    // בחירת השדה לחיפוש לפי שפת השאילתה
-    const searchName = isQueryHebrew ? key : (value.nameEn || key);
-    const normalizedSearchName = searchName.toLowerCase();
+    // תמיד נבדוק גם בעברית וגם באנגלית כדי למצוא התאמות
+    const searchNameHe = key;
+    const searchNameEn = value.nameEn || '';
     
-    // בדיקה אם השאילתה מופיעה בכל חלק של השם
+    // בדיקה אם השאילתה מופיעה בכל חלק של השם (בעברית או באנגלית)
     let matches = false;
     let matchScore = 0;
     
-    // בדיקה 1: התחלה מדויקת - ניקוד גבוה ביותר
-    if (normalizedSearchName.startsWith(normalizedQuery)) {
-      matches = true;
-      matchScore = 100;
-    }
-    // בדיקה 2: מכיל את המחרוזת המלאה - ניקוד בינוני
-    else if (normalizedSearchName.includes(normalizedQuery)) {
-      matches = true;
-      matchScore = 50;
-    }
-    // בדיקה 3: כל מילה בשאילתה מופיעה בשם (בכל חלק) - ניקוד נמוך יותר
-    else if (queryWords.length > 0) {
-      const allWordsMatch = queryWords.every(word => normalizedSearchName.includes(word));
-      if (allWordsMatch) {
+    // בדיקה בעברית
+    if (searchNameHe) {
+      const normalizedHe = searchNameHe.toLowerCase();
+      if (normalizedHe.startsWith(normalizedQuery)) {
         matches = true;
-        matchScore = 25;
+        matchScore = Math.max(matchScore, 100);
+      } else if (normalizedHe.includes(normalizedQuery)) {
+        matches = true;
+        matchScore = Math.max(matchScore, 50);
+      } else if (queryWords.length > 0) {
+        const allWordsMatch = queryWords.every(word => normalizedHe.includes(word));
+        if (allWordsMatch) {
+          matches = true;
+          matchScore = Math.max(matchScore, 25);
+        }
+      }
+    }
+    
+    // בדיקה באנגלית (אם יש שם באנגלית)
+    if (searchNameEn) {
+      const normalizedEn = searchNameEn.toLowerCase();
+      if (normalizedEn.startsWith(normalizedQuery)) {
+        matches = true;
+        matchScore = Math.max(matchScore, 100);
+      } else if (normalizedEn.includes(normalizedQuery)) {
+        matches = true;
+        matchScore = Math.max(matchScore, 50);
+      } else if (queryWords.length > 0) {
+        const allWordsMatch = queryWords.every(word => normalizedEn.includes(word));
+        if (allWordsMatch) {
+          matches = true;
+          matchScore = Math.max(matchScore, 25);
+        }
       }
     }
     
@@ -1220,7 +1239,7 @@ function searchLocations(query) {
     return sortName.localeCompare(sortNameB, isQueryHebrew ? 'he' : 'en');
   });
   
-  return results.slice(0, 10); // מקסימום 10 תוצאות
+  return results.slice(0, 15); // הגדלנו ל-15 תוצאות
 }
 
 function showAutocomplete(results) {
