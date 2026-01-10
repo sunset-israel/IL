@@ -121,49 +121,55 @@ function renderFavorites() {
 // Autocomplete functionality
 let allLocations = null;
 
+// פונקציה לזיהוי אם הטקסט הוא בעברית או באנגלית
+function isHebrew(text) {
+  const hebrewPattern = /[\u0590-\u05FF]/;
+  return hebrewPattern.test(text);
+}
+
 function getAllLocations() {
   if (allLocations) return allLocations;
   
-  // רשימת מקומות ישראליים נפוצים עם קואורדינטות ידועות
+  // רשימת מקומות ישראליים נפוצים עם קואורדינטות ידועות ושמות באנגלית
   const israeliLocations = {
-    'תל אביב': { lat: 32.0853, lon: 34.7818, name: 'תל אביב' },
-    'תל אביב יפו': { lat: 32.0853, lon: 34.7818, name: 'תל אביב יפו' },
-    'ירושלים': { lat: 31.7683, lon: 35.2137, name: 'ירושלים' },
-    'חיפה': { lat: 32.7940, lon: 34.9896, name: 'חיפה' },
-    'נתניה': { lat: 32.3320, lon: 34.8599, name: 'נתניה' },
-    'אילת': { lat: 29.5577, lon: 34.9519, name: 'אילת' },
-    'טבריה': { lat: 32.7959, lon: 35.5310, name: 'טבריה' },
-    'צפת': { lat: 32.9646, lon: 35.4960, name: 'צפת' },
-    'באר שבע': { lat: 31.2433, lon: 34.7938, name: 'באר שבע' },
-    'אשדוד': { lat: 31.8044, lon: 34.6553, name: 'אשדוד' },
-    'אשקלון': { lat: 31.6688, lon: 34.5743, name: 'אשקלון' },
-    'רמת גן': { lat: 32.0820, lon: 34.8136, name: 'רמת גן' },
-    'פתח תקווה': { lat: 32.0889, lon: 34.8564, name: 'פתח תקווה' },
-    'רחובות': { lat: 31.8948, lon: 34.8093, name: 'רחובות' },
-    'ראשון לציון': { lat: 31.9600, lon: 34.8017, name: 'ראשון לציון' },
-    'הרצליה': { lat: 32.1633, lon: 34.8447, name: 'הרצליה' },
-    'כפר סבא': { lat: 32.1719, lon: 34.9069, name: 'כפר סבא' },
-    'רעננה': { lat: 32.1844, lon: 34.8717, name: 'רעננה' },
-    'חדרה': { lat: 32.4340, lon: 34.9195, name: 'חדרה' },
-    'זכרון יעקב': { lat: 32.5694, lon: 34.9522, name: 'זכרון יעקב' },
-    'קיסריה': { lat: 32.5190, lon: 34.9045, name: 'קיסריה' },
-    'נהריה': { lat: 33.0081, lon: 35.0981, name: 'נהריה' },
-    'עכו': { lat: 32.9281, lon: 35.0825, name: 'עכו' },
-    'כרמיאל': { lat: 32.9144, lon: 35.2922, name: 'כרמיאל' },
-    'עמק הירדן': { lat: 32.7000, lon: 35.6000, name: 'עמק הירדן' },
-    'רמת הגולן': { lat: 33.0000, lon: 35.7000, name: 'רמת הגולן' },
-    'גולן': { lat: 33.0000, lon: 35.7000, name: 'רמת הגולן' },
-    'מצפה רמון': { lat: 30.6094, lon: 34.8017, name: 'מצפה רמון' },
-    'דימונה': { lat: 31.0694, lon: 35.0331, name: 'דימונה' },
-    'יבנה': { lat: 31.8800, lon: 34.7400, name: 'יבנה' },
-    'נתיבות': { lat: 31.4219, lon: 34.5881, name: 'נתיבות' },
-    'שדרות': { lat: 31.5250, lon: 34.5961, name: 'שדרות' },
-    'קריית גת': { lat: 31.6094, lon: 34.7717, name: 'קריית גת' },
-    'קריית מלאכי': { lat: 31.7300, lon: 34.7467, name: 'קריית מלאכי' },
-    'גדרה': { lat: 31.8139, lon: 34.7794, name: 'גדרה' },
-    'רמלה': { lat: 31.9253, lon: 34.8669, name: 'רמלה' },
-    'לוד': { lat: 31.9514, lon: 34.8953, name: 'לוד' },
-    'מודיעין': { lat: 31.8992, lon: 35.0100, name: 'מודיעין' },
+    'תל אביב': { lat: 32.0853, lon: 34.7818, name: 'תל אביב', nameEn: 'Tel Aviv' },
+    'תל אביב יפו': { lat: 32.0853, lon: 34.7818, name: 'תל אביב יפו', nameEn: 'Tel Aviv Yafo' },
+    'ירושלים': { lat: 31.7683, lon: 35.2137, name: 'ירושלים', nameEn: 'Jerusalem' },
+    'חיפה': { lat: 32.7940, lon: 34.9896, name: 'חיפה', nameEn: 'Haifa' },
+    'נתניה': { lat: 32.3320, lon: 34.8599, name: 'נתניה', nameEn: 'Netanya' },
+    'אילת': { lat: 29.5577, lon: 34.9519, name: 'אילת', nameEn: 'Eilat' },
+    'טבריה': { lat: 32.7959, lon: 35.5310, name: 'טבריה', nameEn: 'Tiberias' },
+    'צפת': { lat: 32.9646, lon: 35.4960, name: 'צפת', nameEn: 'Safed' },
+    'באר שבע': { lat: 31.2433, lon: 34.7938, name: 'באר שבע', nameEn: 'Beer Sheva' },
+    'אשדוד': { lat: 31.8044, lon: 34.6553, name: 'אשדוד', nameEn: 'Ashdod' },
+    'אשקלון': { lat: 31.6688, lon: 34.5743, name: 'אשקלון', nameEn: 'Ashkelon' },
+    'רמת גן': { lat: 32.0820, lon: 34.8136, name: 'רמת גן', nameEn: 'Ramat Gan' },
+    'פתח תקווה': { lat: 32.0889, lon: 34.8564, name: 'פתח תקווה', nameEn: 'Petah Tikva' },
+    'רחובות': { lat: 31.8948, lon: 34.8093, name: 'רחובות', nameEn: 'Rehovot' },
+    'ראשון לציון': { lat: 31.9600, lon: 34.8017, name: 'ראשון לציון', nameEn: 'Rishon LeZion' },
+    'הרצליה': { lat: 32.1633, lon: 34.8447, name: 'הרצליה', nameEn: 'Herzliya' },
+    'כפר סבא': { lat: 32.1719, lon: 34.9069, name: 'כפר סבא', nameEn: 'Kfar Saba' },
+    'רעננה': { lat: 32.1844, lon: 34.8717, name: 'רעננה', nameEn: 'Raanana' },
+    'חדרה': { lat: 32.4340, lon: 34.9195, name: 'חדרה', nameEn: 'Hadera' },
+    'זכרון יעקב': { lat: 32.5694, lon: 34.9522, name: 'זכרון יעקב', nameEn: 'Zichron Yaakov' },
+    'קיסריה': { lat: 32.5190, lon: 34.9045, name: 'קיסריה', nameEn: 'Caesarea' },
+    'נהריה': { lat: 33.0081, lon: 35.0981, name: 'נהריה', nameEn: 'Nahariya' },
+    'עכו': { lat: 32.9281, lon: 35.0825, name: 'עכו', nameEn: 'Acre' },
+    'כרמיאל': { lat: 32.9144, lon: 35.2922, name: 'כרמיאל', nameEn: 'Karmiel' },
+    'עמק הירדן': { lat: 32.7000, lon: 35.6000, name: 'עמק הירדן', nameEn: 'Jordan Valley' },
+    'רמת הגולן': { lat: 33.0000, lon: 35.7000, name: 'רמת הגולן', nameEn: 'Golan Heights' },
+    'גולן': { lat: 33.0000, lon: 35.7000, name: 'רמת הגולן', nameEn: 'Golan' },
+    'מצפה רמון': { lat: 30.6094, lon: 34.8017, name: 'מצפה רמון', nameEn: 'Mitzpe Ramon' },
+    'דימונה': { lat: 31.0694, lon: 35.0331, name: 'דימונה', nameEn: 'Dimona' },
+    'יבנה': { lat: 31.8800, lon: 34.7400, name: 'יבנה', nameEn: 'Yavne' },
+    'נתיבות': { lat: 31.4219, lon: 34.5881, name: 'נתיבות', nameEn: 'Netivot' },
+    'שדרות': { lat: 31.5250, lon: 34.5961, name: 'שדרות', nameEn: 'Sderot' },
+    'קריית גת': { lat: 31.6094, lon: 34.7717, name: 'קריית גת', nameEn: 'Kiryat Gat' },
+    'קריית מלאכי': { lat: 31.7300, lon: 34.7467, name: 'קריית מלאכי', nameEn: 'Kiryat Malakhi' },
+    'גדרה': { lat: 31.8139, lon: 34.7794, name: 'גדרה', nameEn: 'Gedera' },
+    'רמלה': { lat: 31.9253, lon: 34.8669, name: 'רמלה', nameEn: 'Ramla' },
+    'לוד': { lat: 31.9514, lon: 34.8953, name: 'לוד', nameEn: 'Lod' },
+    'מודיעין': { lat: 31.8992, lon: 35.0100, name: 'מודיעין', nameEn: 'Modiin' },
     'מודיעין מכבים רעות': { lat: 31.8992, lon: 35.0100, name: 'מודיעין מכבים רעות' },
     'מכבים': { lat: 31.8992, lon: 35.0100, name: 'מכבים' },
     'רעות': { lat: 31.8992, lon: 35.0100, name: 'רעות' },
@@ -539,9 +545,23 @@ async function geocodeByName(name) {
   // רשימת מקומות ישראליים נפוצים עם קואורדינטות ידועות
   const israeliLocations = getAllLocations();
   
-  // בדיקה אם זה מקום ישראלי נפוץ
+  // בדיקה אם זה מקום ישראלי נפוץ - גם בעברית וגם באנגלית
   const normalizedName = name.trim();
-  const location = israeliLocations[normalizedName];
+  const isNameHebrew = isHebrew(normalizedName);
+  
+  // חיפוש לפי שם עברי
+  let location = israeliLocations[normalizedName];
+  
+  // אם לא נמצא בעברית, חיפוש לפי שם אנגלי
+  if (!location) {
+    for (const [key, value] of Object.entries(israeliLocations)) {
+      if (value.nameEn && value.nameEn.toLowerCase() === normalizedName.toLowerCase()) {
+        location = { ...value, name: key };
+        break;
+      }
+    }
+  }
+  
   if (location) {
     return {
       name: location.name,
@@ -1146,23 +1166,58 @@ async function fallbackLocationFromIp() {
 function searchLocations(query) {
   if (!query || query.trim().length < 1) return [];
   
+  // שימוש באותו מאגר בדיוק כמו geocodeByName
   const locations = getAllLocations();
   const normalizedQuery = query.trim().toLowerCase();
+  const queryWords = normalizedQuery.split(/\s+/).filter(w => w.length > 0);
+  const isQueryHebrew = isHebrew(query);
   const results = [];
   
   for (const [key, value] of Object.entries(locations)) {
-    if (key.toLowerCase().includes(normalizedQuery)) {
-      results.push({ name: key, ...value });
+    // בחירת השדה לחיפוש לפי שפת השאילתה
+    const searchName = isQueryHebrew ? key : (value.nameEn || key);
+    const normalizedSearchName = searchName.toLowerCase();
+    
+    // בדיקה אם השאילתה מופיעה בכל חלק של השם
+    let matches = false;
+    let matchScore = 0;
+    
+    // בדיקה 1: התחלה מדויקת - ניקוד גבוה ביותר
+    if (normalizedSearchName.startsWith(normalizedQuery)) {
+      matches = true;
+      matchScore = 100;
+    }
+    // בדיקה 2: מכיל את המחרוזת המלאה - ניקוד בינוני
+    else if (normalizedSearchName.includes(normalizedQuery)) {
+      matches = true;
+      matchScore = 50;
+    }
+    // בדיקה 3: כל מילה בשאילתה מופיעה בשם (בכל חלק) - ניקוד נמוך יותר
+    else if (queryWords.length > 0) {
+      const allWordsMatch = queryWords.every(word => normalizedSearchName.includes(word));
+      if (allWordsMatch) {
+        matches = true;
+        matchScore = 25;
+      }
+    }
+    
+    if (matches) {
+      results.push({ 
+        name: key, 
+        ...value,
+        matchScore: matchScore
+      });
     }
   }
   
-  // מיון לפי התאמה (מתחיל עם > מכיל)
+  // מיון לפי ניקוד התאמה (גבוה יותר = טוב יותר), ואז לפי סדר אלפביתי
   results.sort((a, b) => {
-    const aStarts = a.name.toLowerCase().startsWith(normalizedQuery);
-    const bStarts = b.name.toLowerCase().startsWith(normalizedQuery);
-    if (aStarts && !bStarts) return -1;
-    if (!aStarts && bStarts) return 1;
-    return a.name.localeCompare(b.name, 'he');
+    if (a.matchScore !== b.matchScore) {
+      return b.matchScore - a.matchScore; // ניקוד גבוה יותר קודם
+    }
+    const sortName = isQueryHebrew ? a.name : (a.nameEn || a.name);
+    const sortNameB = isQueryHebrew ? b.name : (b.nameEn || b.name);
+    return sortName.localeCompare(sortNameB, isQueryHebrew ? 'he' : 'en');
   });
   
   return results.slice(0, 10); // מקסימום 10 תוצאות
@@ -1178,10 +1233,16 @@ function showAutocomplete(results) {
     return;
   }
   
+  // זיהוי שפת השאילתה הנוכחית
+  const currentQuery = els.searchInput?.value || '';
+  const isQueryHebrew = isHebrew(currentQuery);
+  
   results.forEach((location, index) => {
     const item = document.createElement('div');
     item.className = 'autocomplete-item';
-    item.textContent = location.name;
+    // הצגת השם הנכון לפי שפת השאילתה
+    const displayName = isQueryHebrew ? location.name : (location.nameEn || location.name);
+    item.textContent = displayName;
     item.setAttribute('data-index', index);
     item.setAttribute('tabindex', '0');
     
@@ -1221,11 +1282,16 @@ function hideAutocomplete() {
 
 function selectLocation(location) {
   if (els.searchInput) {
-    els.searchInput.value = location.name;
+    // זיהוי שפת השאילתה הנוכחית
+    const currentQuery = els.searchInput.value || '';
+    const isQueryHebrew = isHebrew(currentQuery);
+    // מילוי השדה בשם הנכון לפי השפה
+    const displayName = isQueryHebrew ? location.name : (location.nameEn || location.name);
+    els.searchInput.value = displayName;
   }
   hideAutocomplete();
   
-  // בחירת המקום
+  // בחירת המקום - תמיד נשתמש בשם העברי כ-label
   currentLocation = {
     latitude: location.lat,
     longitude: location.lon,
