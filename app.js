@@ -752,15 +752,20 @@ function scoreSunsetPoint(forecast, idx) {
   const veryLikelyRain = pop >= 99 && precip >= 2.5; // רק אם כמעט בטוח שירד גשם כבד מאוד מאוד
   const veryLowVisibility = vis < 500; // רק ראות ממש ממש ממש גרועה (סערה חזקה)
 
-  // רק עננות 100% ממש ממש כבדה חוסמת - רק 100% עם כל סוגי העננות דחוסים מאוד
-  const heavyOvercast = cloudTotal >= 100 && lowCloud >= 95 && midCloud >= 90 && (highCloud ?? 0) >= 85;
+  // עננות גבוהה מאוד (95%+) חוסמת את השקיעה - לא ניתן לראות
+  // אם עננות כללית גבוהה מאוד (95%+) עם עננות נמוכה גבוהה (80%+) - לא ניתן לראות
+  const heavyOvercast = cloudTotal >= 95 && lowCloud >= 80;
+  // גם אם עננות כללית 100% או קרוב לזה - לא ניתן לראות
+  const veryHeavyOvercast = cloudTotal >= 100 || (cloudTotal >= 98 && lowCloud >= 70);
+  // עננות בינונית גבוהה מאוד (85%+) עם עננות כללית גבוהה (95%+) - לא ניתן לראות
+  const heavyMidCloud = midCloud >= 85 && cloudTotal >= 95;
 
-  // בדיקה ראשונה - האם יש משהו שחוסם לחלוטין? (נדיר מאוד מאוד מאוד!)
-  if (heavyRain || veryLikelyRain || veryLowVisibility || heavyOvercast) {
+  // בדיקה ראשונה - האם יש משהו שחוסם לחלוטין?
+  if (heavyRain || veryLikelyRain || veryLowVisibility || heavyOvercast || veryHeavyOvercast || heavyMidCloud) {
     return {
       label: 'לא ניתן לראות אותה :(',
       klass: 'bad',
-      reasons: ['גשם כבד מאוד מאוד, עננות צפופה מאוד מאוד או תנאי ראות גרועים מאוד מאוד סביב שקיעה']
+      reasons: ['עננות צפופה מאוד או תנאי ראות גרועים סביב שקיעה']
     };
   }
 
@@ -841,30 +846,19 @@ function scoreSunsetPoint(forecast, idx) {
     return { label: 'שקיעה מהממת!', klass: 'good', reasons };
   }
 
-  // שקיעה יפה - תנאים טובים לשקיעה צבעונית (ברוב המקרים!)
-  // נבדוק קודם כל אם יש עננות בינונית-גבוהה (זה טוב לשקיעה!)
-  if ((midCloud + highCloud) >= 1) {
-    // יש עננות בינונית-גבוהה - זה טוב לשקיעה!
-    if (cloudTotal <= 99 && lowCloud <= 95) {
-      return {
-        label: 'שקיעה יפה',
-        klass: 'nice',
-        reasons: reasons.length ? reasons : ['עננות בינונית-גבוהה עשויה להוסיף צבעים יפים לשקיעה']
-      };
-    }
-  }
-
-  // שקיעה יפה - גם עם עננות כללית בינונית-גבוהה
-  if (cloudTotal <= 99 && lowCloud <= 95) {
+  // שקיעה יפה - רק עם תנאים טובים באמת!
+  // צריך עננות בינונית-גבוהה (לפחות 15%) עם עננות כללית סבירה (לא יותר מ-85%)
+  // ועננות נמוכה לא גבוהה מדי (לא יותר מ-70%)
+  if ((midCloud + highCloud) >= 15 && cloudTotal <= 85 && lowCloud <= 70) {
     return {
       label: 'שקיעה יפה',
       klass: 'nice',
-      reasons: reasons.length ? reasons : ['תנאים טובים לשקיעה']
+      reasons: reasons.length ? reasons : ['עננות בינונית-גבוהה עשויה להוסיף צבעים יפים לשקיעה']
     };
   }
 
-  // שקיעה יפה - גם עם עננות נמוכה בינונית (יכול להיות יפה!)
-  if (cloudTotal <= 98 && lowCloud <= 90) {
+  // שקיעה יפה - גם עם עננות בינונית-גבוהה קלה יותר (לפחות 10%) אבל עם תנאים טובים
+  if ((midCloud + highCloud) >= 10 && cloudTotal <= 80 && lowCloud <= 65) {
     return {
       label: 'שקיעה יפה',
       klass: 'nice',
@@ -1175,43 +1169,68 @@ function searchLocations(query) {
   const isQueryHebrew = isHebrew(trimmedQuery);
   const results = [];
   
+  // אוסף כל המקומות למטריצת חיפוש
   for (const [key, value] of Object.entries(locations)) {
     // תמיד נבדוק גם בעברית וגם באנגלית כדי למצוא התאמות
-    const searchNameHe = key;
+    const searchNameHe = key || value.name || '';
     const searchNameEn = value.nameEn || '';
     
     // בדיקה אם השאילתה מופיעה בכל חלק של השם (בעברית או באנגלית)
     let matches = false;
     let matchScore = 0;
     
-    // בדיקה בעברית
+    // בדיקה בעברית - תמיד נבדוק את השם העברי
     if (searchNameHe) {
       const normalizedHe = searchNameHe.toLowerCase();
+      // בדיקה 1: התחלה מדויקת
       if (normalizedHe.startsWith(normalizedQuery)) {
         matches = true;
         matchScore = Math.max(matchScore, 100);
-      } else if (normalizedHe.includes(normalizedQuery)) {
+      }
+      // בדיקה 2: מכיל את המחרוזת המלאה
+      else if (normalizedHe.includes(normalizedQuery)) {
         matches = true;
         matchScore = Math.max(matchScore, 50);
-      } else if (queryWords.length > 0) {
+      }
+      // בדיקה 3: כל מילה בשאילתה מופיעה בשם
+      else if (queryWords.length > 0 && queryWords.length > 1) {
         const allWordsMatch = queryWords.every(word => normalizedHe.includes(word));
         if (allWordsMatch) {
           matches = true;
           matchScore = Math.max(matchScore, 25);
         }
       }
+      // בדיקה 4: כל תו בשאילתה מופיע בשם (לחיפוש חלקי)
+      else if (normalizedQuery.length > 0) {
+        let allCharsMatch = true;
+        for (let i = 0; i < normalizedQuery.length; i++) {
+          if (!normalizedHe.includes(normalizedQuery[i])) {
+            allCharsMatch = false;
+            break;
+          }
+        }
+        if (allCharsMatch && normalizedQuery.length >= 2) {
+          matches = true;
+          matchScore = Math.max(matchScore, 10);
+        }
+      }
     }
     
     // בדיקה באנגלית (אם יש שם באנגלית)
-    if (searchNameEn) {
+    if (searchNameEn && !matches) {
       const normalizedEn = searchNameEn.toLowerCase();
+      // בדיקה 1: התחלה מדויקת
       if (normalizedEn.startsWith(normalizedQuery)) {
         matches = true;
         matchScore = Math.max(matchScore, 100);
-      } else if (normalizedEn.includes(normalizedQuery)) {
+      }
+      // בדיקה 2: מכיל את המחרוזת המלאה
+      else if (normalizedEn.includes(normalizedQuery)) {
         matches = true;
         matchScore = Math.max(matchScore, 50);
-      } else if (queryWords.length > 0) {
+      }
+      // בדיקה 3: כל מילה בשאילתה מופיעה בשם
+      else if (queryWords.length > 0 && queryWords.length > 1) {
         const allWordsMatch = queryWords.every(word => normalizedEn.includes(word));
         if (allWordsMatch) {
           matches = true;
@@ -1239,7 +1258,7 @@ function searchLocations(query) {
     return sortName.localeCompare(sortNameB, isQueryHebrew ? 'he' : 'en');
   });
   
-  return results.slice(0, 15); // הגדלנו ל-15 תוצאות
+  return results.slice(0, 20); // הגדלנו ל-20 תוצאות
 }
 
 function showAutocomplete(results) {
