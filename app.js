@@ -534,32 +534,103 @@ function getAllLocations() {
     'מועצה אזורית שער הנגב': { lat: 31.5000, lon: 34.6000, name: 'מועצה אזורית שער הנגב' },
     'מועצה אזורית אשכול': { lat: 31.3000, lon: 34.4000, name: 'מועצה אזורית אשכול' },
     'מועצה אזורית רמת הנגב': { lat: 30.8000, lon: 34.8000, name: 'מועצה אזורית רמת הנגב' },
-    'מועצה אזורית תמר': { lat: 31.0000, lon: 35.4000, name: 'מועצה אזורית תמר' }
+    'מועצה אזורית תמר': { lat: 31.0000, lon: 35.4000, name: 'מועצה אזורית תמר' },
+    // קיבוצים בעוטף עזה
+    'ניר עוז': { lat: 31.3100, lon: 34.4000, name: 'ניר עוז', nameEn: 'Nir Oz' },
+    'כיסופים': { lat: 31.3500, lon: 34.4000, name: 'כיסופים', nameEn: 'Kissufim' },
+    'אורים': { lat: 31.3000, lon: 34.5167, name: 'אורים', nameEn: 'Urim' },
+    'עלומים': { lat: 31.4500, lon: 34.5000, name: 'עלומים', nameEn: 'Alumim' },
+    'סעד': { lat: 31.4667, lon: 34.5333, name: 'סעד', nameEn: 'Sa\'ad' },
+    'מפלסים': { lat: 31.5000, lon: 34.5500, name: 'מפלסים', nameEn: 'Mefalsim' },
+    'רעים': { lat: 31.3833, lon: 34.4500, name: 'רעים', nameEn: 'Re\'im' },
+    'סופה': { lat: 31.2333, lon: 34.3167, name: 'סופה', nameEn: 'Sufa' },
+    'חולית': { lat: 31.2333, lon: 34.3333, name: 'חולית', nameEn: 'Holit' },
+    'תלמי יוסף': { lat: 31.2500, lon: 34.3500, name: 'תלמי יוסף', nameEn: 'Talmei Yosef' },
+    'דקל': { lat: 31.2667, lon: 34.3667, name: 'דקל', nameEn: 'Dekel' },
+    'ניר עם': { lat: 31.5167, lon: 34.5833, name: 'ניר עם', nameEn: 'Nir Am' },
+    'גבים': { lat: 31.5000, lon: 34.6000, name: 'גבים', nameEn: 'Gevim' },
+    'זיקים': { lat: 31.4833, lon: 34.5667, name: 'זיקים', nameEn: 'Zikim' },
+    'כרמיה': { lat: 31.4667, lon: 34.5500, name: 'כרמיה', nameEn: 'Karmia' },
+    'יבנה': { lat: 31.4500, lon: 34.5333, name: 'יבנה', nameEn: 'Yavne' },
+    'ניר יצחק': { lat: 31.2333, lon: 34.4000, name: 'ניר יצחק', nameEn: 'Nir Yitzhak' },
+    'מגן': { lat: 31.3000, lon: 34.4333, name: 'מגן', nameEn: 'Magen' },
+    'אור הנר': { lat: 31.5500, lon: 34.6000, name: 'אור הנר', nameEn: 'Or HaNer' },
+    'יד מרדכי': { lat: 31.5833, lon: 34.5500, name: 'יד מרדכי', nameEn: 'Yad Mordechai' },
+    'גברעם': { lat: 31.6000, lon: 34.5667, name: 'גברעם', nameEn: 'Gvar\'am' },
+    'נחל עוז': { lat: 31.4667, lon: 34.4833, name: 'נחל עוז', nameEn: 'Nahal Oz' },
+    'ארז': { lat: 31.4833, lon: 34.5167, name: 'ארז', nameEn: 'Erez' }
   };
   
   allLocations = israeliLocations;
   return allLocations;
 }
 
-// Geocoding
+// Geocoding - חיפוש רק במאגר המקומי עם התאמה חלקית (contains)
 async function geocodeByName(name) {
-  // רשימת מקומות ישראליים נפוצים עם קואורדינטות ידועות
+  // שימוש באותו מאגר בדיוק כמו searchLocations
   const israeliLocations = getAllLocations();
-  
-  // בדיקה אם זה מקום ישראלי נפוץ - גם בעברית וגם באנגלית
   const normalizedName = name.trim();
+  const normalizedQuery = normalizedName.toLowerCase();
   const isNameHebrew = isHebrew(normalizedName);
   
-  // חיפוש לפי שם עברי
+  // חיפוש מדויק קודם (התאמה מלאה)
   let location = israeliLocations[normalizedName];
   
-  // אם לא נמצא בעברית, חיפוש לפי שם אנגלי
+  // אם לא נמצא התאמה מדויקת, חיפוש לפי שם אנגלי מדויק
   if (!location) {
     for (const [key, value] of Object.entries(israeliLocations)) {
-      if (value.nameEn && value.nameEn.toLowerCase() === normalizedName.toLowerCase()) {
+      if (value.nameEn && value.nameEn.toLowerCase() === normalizedQuery) {
         location = { ...value, name: key };
         break;
       }
+    }
+  }
+  
+  // אם לא נמצא התאמה מדויקת, חיפוש עם התאמה חלקית (contains)
+  if (!location) {
+    const matches = [];
+    
+    for (const [key, value] of Object.entries(israeliLocations)) {
+      const searchNameHe = key || value.name || '';
+      const searchNameEn = value.nameEn || '';
+      const normalizedHe = searchNameHe.toLowerCase();
+      const normalizedEn = searchNameEn.toLowerCase();
+      
+      let matchScore = 0;
+      
+      // בדיקה בעברית - התחלה מדויקת
+      if (normalizedHe.startsWith(normalizedQuery)) {
+        matchScore = 100;
+      }
+      // בדיקה בעברית - מכיל
+      else if (normalizedHe.includes(normalizedQuery)) {
+        matchScore = 50;
+      }
+      // בדיקה באנגלית - התחלה מדויקת
+      else if (normalizedEn && normalizedEn.startsWith(normalizedQuery)) {
+        matchScore = 100;
+      }
+      // בדיקה באנגלית - מכיל
+      else if (normalizedEn && normalizedEn.includes(normalizedQuery)) {
+        matchScore = 50;
+      }
+      
+      if (matchScore > 0) {
+        matches.push({
+          key: key,
+          value: value,
+          matchScore: matchScore
+        });
+      }
+    }
+    
+    // מיון לפי ניקוד (גבוה יותר קודם)
+    matches.sort((a, b) => b.matchScore - a.matchScore);
+    
+    // בחירת התוצאה הטובה ביותר
+    if (matches.length > 0) {
+      const bestMatch = matches[0];
+      location = { ...bestMatch.value, name: bestMatch.key };
     }
   }
   
@@ -571,54 +642,7 @@ async function geocodeByName(name) {
     };
   }
   
-  // אם לא נמצא ברשימה, חיפוש דרך API
-  const url = new URL('https://geocoding-api.open-meteo.com/v1/search');
-  url.searchParams.set('name', name);
-  url.searchParams.set('count', '20'); // הגדלנו ל-20 כדי למצוא יותר תוצאות ישראליות
-  url.searchParams.set('language', 'he');
-  // הגבלה לאזור ישראל
-  url.searchParams.set('latitude', '31.5');
-  url.searchParams.set('longitude', '34.8');
-  url.searchParams.set('radius', '200');
-  const r = await fetch(url.toString());
-  if (!r.ok) throw new Error('שגיאה באיתור הכתובת');
-  const j = await r.json();
-  if (!j.results || j.results.length === 0) throw new Error('לא נמצא מיקום תואם');
-  
-  // פונקציה לבדיקה אם מיקום נמצא בישראל לפי קואורדינטות
-  const isInIsrael = (lat, lon) => {
-    // גבולות ישראל (קירוב): צפון: 33.3, דרום: 29.5, מזרח: 35.9, מערב: 34.2
-    return lat >= 29.5 && lat <= 33.3 && lon >= 34.2 && lon <= 35.9;
-  };
-  
-  // חיפוש תוצאה בישראל - עדיפות למקומות עם country_code='IL' או בתוך גבולות ישראל
-  const israelResults = j.results.filter(r => {
-    const hasIsraelCode = r.country_code === 'IL' || r.country === 'Israel' || r.country === 'ישראל';
-    const inIsraelBounds = isInIsrael(r.latitude, r.longitude);
-    return hasIsraelCode || inIsraelBounds;
-  });
-  
-  // אם נמצאו תוצאות ישראליות, נשתמש בהן
-  if (israelResults.length > 0) {
-    const top = israelResults[0];
-    return {
-      name: [top.name, top.admin1].filter(Boolean).join(', '),
-      latitude: top.latitude,
-      longitude: top.longitude
-    };
-  }
-  
-  // אם לא נמצאו תוצאות ישראליות, נבדוק אם התוצאה הראשונה בתוך גבולות ישראל
-  const firstResult = j.results[0];
-  if (isInIsrael(firstResult.latitude, firstResult.longitude)) {
-    return {
-      name: [firstResult.name, firstResult.admin1].filter(Boolean).join(', '),
-      latitude: firstResult.latitude,
-      longitude: firstResult.longitude
-    };
-  }
-  
-  // אם לא נמצא מקום בישראל, נזרוק שגיאה
+  // אם לא נמצא מקום במאגר המקומי, נזרוק שגיאה
   throw new Error('לא נמצא מיקום בישראל. אנא נסו שם מקום ישראלי.');
 }
 
@@ -763,7 +787,7 @@ function scoreSunsetPoint(forecast, idx) {
   // בדיקה ראשונה - האם יש משהו שחוסם לחלוטין?
   if (heavyRain || veryLikelyRain || veryLowVisibility || heavyOvercast || veryHeavyOvercast || heavyMidCloud) {
     return {
-      label: 'לא ניתן לראות אותה :(',
+      label: 'לא ניתן לראות אותה',
       klass: 'bad',
       reasons: ['עננות צפופה מאוד או תנאי ראות גרועים סביב שקיעה']
     };
