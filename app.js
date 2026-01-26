@@ -869,9 +869,16 @@ function scoreSunsetPoint(forecast, idx) {
   const veryHeavyOvercast = cloudTotal >= 100 || (cloudTotal >= 98 && lowCloud >= 70);
   // עננות בינונית גבוהה מאוד (85%+) עם עננות כללית גבוהה (95%+) - לא ניתן לראות
   const heavyMidCloud = midCloud >= 85 && cloudTotal >= 95;
+  
+  // עננות נמוכה גבוהה מדי (70%+) חוסמת את השקיעה - העננים האפורים כיסו אותה
+  const blockingLowCloud = lowCloud >= 70 && cloudTotal >= 85;
+  // עננות בינונית גבוהה מדי (60%+) עם עננות כללית גבוהה (85%+) - חוסמת את השקיעה
+  const blockingMidCloud = midCloud >= 60 && cloudTotal >= 85 && lowCloud >= 50;
+  // שילוב של עננות נמוכה ובינונית גבוהה - חוסם את השקיעה
+  const blockingCombo = lowCloud >= 65 && midCloud >= 55 && cloudTotal >= 85;
 
   // בדיקה ראשונה - האם יש משהו שחוסם לחלוטין?
-  if (heavyRain || veryLikelyRain || veryLowVisibility || heavyOvercast || veryHeavyOvercast || heavyMidCloud) {
+  if (heavyRain || veryLikelyRain || veryLowVisibility || heavyOvercast || veryHeavyOvercast || heavyMidCloud || blockingLowCloud || blockingMidCloud || blockingCombo) {
     return {
       label: 'לא ניתן לראות אותה',
       klass: 'bad',
@@ -902,56 +909,64 @@ function scoreSunsetPoint(forecast, idx) {
     };
   }
   
-  // אם עננות בינונית גבוהה מדי (65%+) - זה עלול להסתיר את השקיעה = שקיעה רגילה
+  // אם עננות בינונית גבוהה מדי (55%+) - זה עלול להסתיר את השקיעה = שקיעה רגילה
   // מקרה: עננות כללית 78%, נמוכה 0%, בינונית 73%, גבוהה 39% = שקיעה רגילה
-  if (midCloud >= 65 && cloudTotal >= 75 && lowCloud <= 10) {
+  // גם אם עננות נמוכה גבוהה (60%+) - העננים האפורים יחסמו את השקיעה
+  if ((midCloud >= 55 && cloudTotal >= 75) || (lowCloud >= 60 && cloudTotal >= 80)) {
     return {
       label: 'שקיעה רגילה',
       klass: 'clear',
-      reasons: ['עננות בינונית גבוהה מדי עלולה להסתיר את השקיעה']
+      reasons: ['עננות גבוהה מדי עלולה להסתיר את השקיעה']
     };
   }
   // ============================================
 
   // שקיעה מהממת - התנאים האידיאליים: מעט עננות נמוכה + עננות בינונית/גבוהה טובה
-  // אבל לא אם עננות בינונית גבוהה מדי (65%+) - זה עלול להסתיר
-  const great = lowCloud <= 50 && (midCloud + highCloud) >= 15 && cloudTotal <= 94 && (midCloud ?? 0) < 65;
+  // אבל לא אם עננות בינונית גבוהה מדי (55%+) - זה עלול להסתיר
+  // ועננות נמוכה לא גבוהה מדי (לא יותר מ-50%) - אחרת העננים האפורים יחסמו
+  const great = lowCloud <= 50 && (midCloud + highCloud) >= 15 && cloudTotal <= 94 && (midCloud ?? 0) < 55;
   if (great) {
     return { label: 'שקיעה מהממת!', klass: 'good', reasons };
   }
 
   // שקיעה מהממת - עננות גבוהה טובה עם מעט עננות נמוכה
-  const greatHigh = highCloud >= 25 && lowCloud <= 55 && cloudTotal <= 94;
+  // עננות נמוכה לא יותר מ-50% - אחרת העננים האפורים יחסמו
+  const greatHigh = highCloud >= 25 && lowCloud <= 50 && cloudTotal <= 94 && midCloud < 55;
   if (greatHigh) {
     return { label: 'שקיעה מהממת!', klass: 'good', reasons };
   }
 
   // שקיעה מהממת - עננות בינונית טובה עם מעט עננות נמוכה
-  const greatMid = midCloud >= 20 && lowCloud <= 60 && cloudTotal <= 93;
+  // עננות נמוכה לא יותר מ-50% - אחרת העננים האפורים יחסמו
+  const greatMid = midCloud >= 20 && midCloud < 55 && lowCloud <= 50 && cloudTotal <= 93;
   if (greatMid) {
     return { label: 'שקיעה מהממת!', klass: 'good', reasons };
   }
 
-  // שקיעה מהממת - שילוב של עננות בינונית וגבוהה גם אם עננות נמוכה בינונית
-  const greatCombo = (midCloud + highCloud) >= 30 && lowCloud <= 65 && cloudTotal <= 92;
+  // שקיעה מהממת - שילוב של עננות בינונית וגבוהה עם עננות נמוכה מועטה
+  // עננות נמוכה לא יותר מ-55% - אחרת העננים האפורים יחסמו
+  const greatCombo = (midCloud + highCloud) >= 30 && lowCloud <= 55 && cloudTotal <= 92 && midCloud < 55;
   if (greatCombo) {
     return { label: 'שקיעה מהממת!', klass: 'good', reasons };
   }
 
-  // שקיעה מהממת - עננות בינונית-גבוהה טובה גם עם עננות נמוכה בינונית
-  const greatAlt = (midCloud + highCloud) >= 40 && cloudTotal <= 90 && lowCloud <= 70;
+  // שקיעה מהממת - עננות בינונית-גבוהה טובה עם עננות נמוכה מועטה
+  // עננות נמוכה לא יותר מ-55% - אחרת העננים האפורים יחסמו
+  const greatAlt = (midCloud + highCloud) >= 40 && cloudTotal <= 90 && lowCloud <= 55 && midCloud < 55;
   if (greatAlt) {
     return { label: 'שקיעה מהממת!', klass: 'good', reasons };
   }
 
-  // שקיעה מהממת - עננות בינונית-גבוהה בינונית עם עננות נמוכה סבירה
-  const greatModerate = (midCloud + highCloud) >= 25 && cloudTotal <= 88 && lowCloud <= 75;
+  // שקיעה מהממת - עננות בינונית-גבוהה בינונית עם עננות נמוכה מועטה
+  // עננות נמוכה לא יותר מ-60% - אחרת העננים האפורים יחסמו
+  const greatModerate = (midCloud + highCloud) >= 25 && cloudTotal <= 88 && lowCloud <= 60 && midCloud < 55;
   if (greatModerate) {
     return { label: 'שקיעה מהממת!', klass: 'good', reasons };
   }
 
   // שקיעה מהממת - גם עם עננות בינונית-גבוהה קלה אם אין עננות נמוכה דחוסה
-  const greatLight = (midCloud + highCloud) >= 20 && cloudTotal <= 90 && lowCloud <= 60;
+  // עננות נמוכה לא יותר מ-50% - אחרת העננים האפורים יחסמו
+  const greatLight = (midCloud + highCloud) >= 20 && cloudTotal <= 90 && lowCloud <= 50 && midCloud < 55;
   if (greatLight) {
     return { label: 'שקיעה מהממת!', klass: 'good', reasons };
   }
@@ -969,6 +984,26 @@ function scoreSunsetPoint(forecast, idx) {
 
   // שקיעה יפה - גם עם עננות בינונית-גבוהה קלה יותר (לפחות 10%) אבל עם תנאים טובים
   if ((midCloud + highCloud) >= 10 && cloudTotal <= 80 && lowCloud <= 65) {
+    return {
+      label: 'שקיעה יפה',
+      klass: 'nice',
+      reasons: reasons.length ? reasons : ['תנאים טובים לשקיעה']
+    };
+  }
+
+  // שקיעה יפה - הרחבה: גם עם עננות בינונית-גבוהה קלה (לפחות 5%) אם עננות כללית סבירה
+  // זה כולל מקרים כמו ירושלים היום שבה השקיעה בפועל יפה
+  if ((midCloud + highCloud) >= 5 && cloudTotal <= 90 && lowCloud <= 75 && midCloud < 65) {
+    return {
+      label: 'שקיעה יפה',
+      klass: 'nice',
+      reasons: reasons.length ? reasons : ['תנאים טובים לשקיעה']
+    };
+  }
+
+  // שקיעה יפה - גם עם עננות כללית בינונית (עד 90%) אם יש עננות בינונית-גבוהה כלשהי
+  // ועננות נמוכה לא חוסמת (עד 80%)
+  if ((midCloud + highCloud) >= 3 && cloudTotal <= 90 && lowCloud <= 80 && midCloud < 70) {
     return {
       label: 'שקיעה יפה',
       klass: 'nice',
